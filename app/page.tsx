@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 import Image from "next/image";
 
 export default function Home() {
+  const message = "Hello I’m interested in your luxury car rental services. Can you share availability and pricing? ";
   return (
     <main className="">
       <HeroSection />
@@ -23,9 +24,10 @@ export default function Home() {
       <FaqSection />
       <Footer />
 
-      <div className="fixed bottom-6 right-6 z-[9999] pointer-events-auto">
+      <div className="fixed bottom-6 right-6 z-9999 pointer-events-auto">
         <a
-          href="https://wa.me/971501234567"
+          aria-label="Chat on WhatsApp"
+          href={`https://wa.me/971559990003?text=${encodeURIComponent(message)}`}
           target="_blank"
           rel="noopener noreferrer"
           className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-2xl hover:scale-110

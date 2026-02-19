@@ -11,7 +11,7 @@ import { useCars } from "../hook/useCar";
 import { Car } from "../types";
 
 // ─── YOUR WHATSAPP NUMBER ─────────────────────────────────
-const WHATSAPP_NUMBER = "1234567890";
+const WHATSAPP_NUMBER = "+971559990003";
 
 // ─── ICONS ───────────────────────────────────────────────
 const IconElectric = () => (
