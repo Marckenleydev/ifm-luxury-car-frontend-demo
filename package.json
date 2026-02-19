@@ -1,5 +1,5 @@
 {
-  "name": "ifm-luxury",
+  "name": "elite-drive",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,9 +9,15 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.90.21",
+    "add": "^2.0.6",
+    "axios": "^1.13.5",
+    "framer-motion": "^12.34.0",
+    "lucide-react": "^0.564.0",
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "swiper": "^12.1.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

@@ -1,7 +1,8 @@
-@import "tailwindcss";
 
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import "tailwindcss";
 :root {
-  --background: #ffffff;
+  --background: #0a0a0a;
   --foreground: #171717;
 }
 
@@ -12,15 +13,132 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+
+html,
+body {
+  background-color: #0a0a0a;
+  color: #F5F0E8;
+  font-family: "Outfit", sans-serif;
+
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+@theme {
+  --container-padding: 1rem;
+
+  --color-primary: #F5F0E8;
+  --color-primary-dark: #1A0202;
+}
+@layer utilities {
+
+  /* =========================
+     HEADLINES (SERIF)
+     ========================= */
+
+
+.headline {
+  @apply font-serif font-semibold tracking-[-0.02em];
+  font-size: clamp(2rem, 6vw, 5rem); /* 2rem = 32px on mobile, scales up to 80px */
+  line-height: clamp(2.25rem, 7vw, 5.5rem); /* proportionally taller line-height */
+}
+
+
+  .h2 {
+    @apply font-serif text-[48px] leading-[56px] font-semibold tracking-[-0.015em];
+  }
+
+  .h3 {
+    @apply font-serif text-[36px] leading-[44px] font-medium tracking-[-0.01em];
+  }
+
+  .h4 {
+    @apply font-serif text-[28px] leading-[36px] font-medium tracking-[-0.005em];
+  }
+
+  /* =========================
+     UI HEADINGS (SANS)
+     ========================= */
+
+  .h5 {
+    @apply font-sans text-[18px] leading-[26px] font-semibold;
+  }
+
+  .h6 {
+    @apply font-sans text-[14px] leading-[20px] font-semibold uppercase tracking-[0.04em];
+  }
+
+  /* =========================
+     BODY TEXT
+     ========================= */
+
+  .body-lg {
+    @apply font-sans text-[18px] leading-[30px] font-normal;
+  }
+
+  .body {
+    @apply font-sans text-[16px] leading-[26px] font-normal;
+  }
+
+  .body-sm {
+    @apply font-sans text-[14px] leading-[22px] font-normal;
+  }
+
+  /* =========================
+     BUTTONS
+     ========================= */
+
+     .primary
+
+  .btn-primary {
+    @apply font-sans text-[14px] leading-[16px] font-semibold uppercase tracking-[0.06em];
+  }
+
+  .btn-secondary {
+    @apply font-sans text-[14px] leading-[16px] font-medium tracking-[0.04em];
+  }
+
+  /* =========================
+     CAPTIONS / META
+     ========================= */
+
+  .caption {
+    @apply font-sans text-[12px] leading-[18px] font-normal tracking-[0.03em];
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+
+        @keyframes fork-left {
+          0%, 100% {
+            transform: translateX(0) rotate(0deg);
+          }
+          50% {
+            transform: translateX(-5px) rotate(-10deg);
+          }
+        }
+        
+        @keyframes knife-right {
+          0%, 100% {
+            transform: translateX(0) rotate(0deg);
+          }
+          50% {
+            transform: translateX(5px) rotate(10deg);
+          }
+        }
+        
+        .animate-fork-left {
+          animation: fork-left 1.5s ease-in-out infinite;
+          transform-origin: center;
+        }
+        
+        .animate-knife-right {
+          animation: knife-right 1.5s ease-in-out infinite;
+          transform-origin: center;
+        }
+     
