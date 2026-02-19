@@ -201,7 +201,7 @@ function ImagePanel() {
       {/* Parallax image */}
       <div className="relative overflow-hidden" style={{ height: "560px" }}>
         <motion.img
-          src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=700&q=85"
+          src="/lamborghini_yellow.jpg"
           alt="Luxury car"
           className="w-full object-cover"
           style={{ y: imgY, height: "115%", top: "-7.5%", position: "absolute" }}
