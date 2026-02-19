@@ -882,7 +882,7 @@ export default function SingleCarPage() {
 
               {/* WhatsApp button */}
               <a
-                href={`https://wa.me/1234567890?text=${encodeURIComponent(`Hi, I'd like to reserve the ${car.brand} ${car.model} ${car.year}`)}`}
+                href={`https://wa.me/+971559990003?text=${encodeURIComponent(`Hi, I'd like to reserve the ${car.brand} ${car.model} ${car.year}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2.5 px-6 py-3 no-underline transition-all duration-300 hover:bg-[rgba(37,211,102,0.15)] w-full"
