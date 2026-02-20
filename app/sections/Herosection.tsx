@@ -9,6 +9,7 @@ import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motio
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Keyboard } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
+import LuxuryNavbar from "../components/Navbar";
 
 // Import Swiper styles — add these to your global CSS or layout
 // import "swiper/css";
@@ -208,6 +209,14 @@ export default function HeroSection() {
 
   const slide = slides[current];
 
+  const navLinks = [
+    { label: "Home", href: "/" },
+    { label: "Fleet", href: "/fleets" },
+    { label: "About Us", href: "/about" },
+    { label: "Contact", href: "/contact" },
+    { label: "Faq", href: "/faq" },
+  ];
+
   return (
     <>
       {/* ── CUSTOM CURSOR ─────────────────────── */}
@@ -247,50 +256,7 @@ export default function HeroSection() {
         {/* ══════════════════════════════════════
             NAVBAR
         ══════════════════════════════════════ */}
-        <motion.nav
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="relative z-50 flex items-center justify-between px-6 lg:px-12 py-6 border-b border-[#C9A84C]/12"
-          style={{ background: "linear-gradient(to bottom, rgba(9,9,9,0.97), transparent)" }}
-        >
-          {/* Logo */}
-          <a href="/" className="flex flex-col gap-0.5 no-underline group">
-            <span
-              className="text-[#C9A84C] tracking-[0.42em] leading-none font-light group-hover:tracking-[0.48em] transition-all duration-500"
-              style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px" }}
-            >
-              IFM Luxury
-            </span>
-            <span className="text-[7.5px] tracking-[0.45em] text-white/25 uppercase font-medium">
-              car rentals
-            </span>
-          </a>
-
-          {/* Nav links */}
-          <ul className="hidden md:flex items-center gap-10 list-none">
-            {["HOME", "FLEET", "ABOUT US","MY BOOKINGS", "FAQ", "CONTACT"].map((link) => (
-              <li key={link}>
-                <a
-                  href={`/${link.toLowerCase()}`}
-                  className="text-[9.5px] tracking-[0.28em] uppercase text-white/45 hover:text-[#C9A84C] transition-colors duration-300 no-underline relative group"
-                >
-                  {link}
-                  <span className="absolute -bottom-1 left-0 right-0 h-px bg-[#C9A84C] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          {/* Reserve CTA */}
-          <a
-            href="/reserve"
-            className="relative overflow-hidden px-6 py-2.5 bg-[#C9A84C] text-[#090909] text-[9.5px] font-bold tracking-[0.3em] uppercase no-underline group transition-all duration-300 hover:bg-[#E8C97A]"
-          >
-            <span className="relative z-10">Reserve Now</span>
-            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-500" />
-          </a>
-        </motion.nav>
+        <LuxuryNavbar />
 
         {/* ══════════════════════════════════════
             HERO BODY — SWIPER

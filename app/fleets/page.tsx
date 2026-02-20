@@ -1,306 +1,353 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useRef, useMemo } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import { useCars } from "../hook/useCar";
 import LuxuryNavbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { IconAC, IconAutomatic, IconDiesel, IconElectric, IconHybrid, IconManual, IconPetrol, IconSearch, IconSeat } from "../Icons";
 
 // ─── ICONS ───────────────────────────────────────────────
-const IconElectric = ({ className = "w-3.5 h-3.5" }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-    <path d="M12 2L2 12h3v8h14v-8h3L12 2z" />
-    <path d="M12 2v20" />
-  </svg>
-);
 
-const IconSeat = ({ className = "w-3.5 h-3.5" }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-    <path d="M5 12h14M8 8h8M8 16h8" />
-    <rect x="4" y="4" width="16" height="16" rx="2" />
-  </svg>
-);
 
-const IconAC = ({ className = "w-3.5 h-3.5" }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-    <path d="M12 2v20M2 12h20M6 6l12 12M6 18L18 6" />
-    <circle cx="12" cy="12" r="4" />
-  </svg>
-);
+// ─── HELPER FUNCTIONS ───────────────────────────────────
+const getFuelIcon = (fuelType: string) => {
+  switch(fuelType?.toUpperCase()) {
+    case 'PETROL': return <IconPetrol />;
+    case 'DIESEL': return <IconDiesel />;
+    case 'ELECTRIC': return <IconElectric />;
+    case 'HYBRID': return <IconHybrid />;
+    default: return <IconPetrol />;
+  }
+};
 
-const IconAutomatic = ({ className = "w-3.5 h-3.5" }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-    <circle cx="12" cy="12" r="10" />
-    <path d="M12 6v6l4 2" />
-  </svg>
-);
+const getTransmissionIcon = (transmission: string) => {
+  switch(transmission?.toUpperCase()) {
+    case 'AUTOMATIC': return <IconAutomatic />;
+    case 'MANUAL': return <IconManual />;
+    default: return <IconAutomatic />;
+  }
+};
 
-const IconPetrol = ({ className = "w-3.5 h-3.5" }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-    <path d="M4 20V6a2 2 0 012-2h8a2 2 0 012 2v14" />
-    <path d="M4 12h12M18 20h2M18 8h2" />
-  </svg>
-);
+const getTransmissionLabel = (transmission: string) => {
+  switch(transmission?.toUpperCase()) {
+    case 'AUTOMATIC': return 'Auto';
+    case 'MANUAL': return 'Manual';
+    default: return transmission || 'Auto';
+  }
+};
 
-const IconSearch = () => (
-  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
-  </svg>
-);
+const getFuelLabel = (fuelType: string) => {
+  switch(fuelType?.toUpperCase()) {
+    case 'PETROL': return 'Petrol';
+    case 'DIESEL': return 'Diesel';
+    case 'ELECTRIC': return 'Electric';
+    case 'HYBRID': return 'Hybrid';
+    default: return fuelType || 'Petrol';
+  }
+};
 
-// ─── DATA ────────────────────────────────────────────────
-const categories = ["All", "Sports", "SUV", "Sedan", "Electric", "Convertible"];
+// Derive categories from data
+const getCategoriesFromCars = (cars: any[]) => {
+  const categories = ['All', ...new Set(cars.map(car => car.category || car.fuelType || 'Luxury'))];
+  return categories;
+};
 
-const allCars = [
-  {
-    name: "Porsche 911 Carrera 2025",
-    category: "Sports",
-    price: "$320/day",
-    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80",
-    specs: [
-      { icon: <IconElectric />, label: "Electric" },
-      { icon: <IconSeat />, label: "2 Seats" },
-      { icon: <IconAC />, label: "A/C" },
-      { icon: <IconAutomatic />, label: "Automatic" },
-    ],
-    featured: true,
-  },
-  {
-    name: "Audi R8 V10 Performance",
-    category: "Sports",
-    price: "$280/day",
-    image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=600&q=80",
-    specs: [
-      { icon: <IconPetrol />, label: "Petrol" },
-      { icon: <IconSeat />, label: "2 Seats" },
-      { icon: <IconAC />, label: "A/C" },
-      { icon: <IconAutomatic />, label: "Automatic" },
-    ],
-    featured: false,
-  },
-  {
-    name: "Ferrari Portofino M 2025",
-    category: "Convertible",
-    price: "$450/day",
-    image: "https://images.unsplash.com/photo-1592198084033-aade902d1aae?auto=format&fit=crop&w=600&q=80",
-    specs: [
-      { icon: <IconPetrol />, label: "Petrol" },
-      { icon: <IconSeat />, label: "2 Seats" },
-      { icon: <IconAC />, label: "A/C" },
-      { icon: <IconAutomatic />, label: "Automatic" },
-    ],
-    featured: false,
-  },
-  {
-    name: "BMW X7 M Sport",
-    category: "SUV",
-    price: "$210/day",
-    image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=600&q=80",
-    specs: [
-      { icon: <IconPetrol />, label: "Petrol" },
-      { icon: <IconSeat />, label: "7 Seats" },
-      { icon: <IconAC />, label: "A/C" },
-      { icon: <IconAutomatic />, label: "Automatic" },
-    ],
-    featured: false,
-  },
-  {
-    name: "Porsche Taycan Turbo",
-    category: "Electric",
-    price: "$340/day",
-    image: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=600&q=80",
-    specs: [
-      { icon: <IconElectric />, label: "Electric" },
-      { icon: <IconSeat />, label: "4 Seats" },
-      { icon: <IconAC />, label: "A/C" },
-      { icon: <IconAutomatic />, label: "Automatic" },
-    ],
-    featured: false,
-  },
-  {
-    name: "Mercedes AMG GT 63",
-    category: "Sedan",
-    price: "$260/day",
-    image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=600&q=80",
-    specs: [
-      { icon: <IconPetrol />, label: "Petrol" },
-      { icon: <IconSeat />, label: "4 Seats" },
-      { icon: <IconAC />, label: "A/C" },
-      { icon: <IconAutomatic />, label: "Automatic" },
-    ],
-    featured: false,
-  },
-  {
-    name: "Lamborghini Huracán",
-    category: "Sports",
-    price: "$590/day",
-    image: "https://images.unsplash.com/photo-1621135802920-133df287f89c?auto=format&fit=crop&w=600&q=80",
-    specs: [
-      { icon: <IconPetrol />, label: "Petrol" },
-      { icon: <IconSeat />, label: "2 Seats" },
-      { icon: <IconAC />, label: "A/C" },
-      { icon: <IconAutomatic />, label: "Automatic" },
-    ],
-    featured: false,
-  },
-  {
-    name: "Range Rover Autobiography",
-    category: "SUV",
-    price: "$230/day",
-    image: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=600&q=80",
-    specs: [
-      { icon: <IconPetrol />, label: "Petrol" },
-      { icon: <IconSeat />, label: "5 Seats" },
-      { icon: <IconAC />, label: "A/C" },
-      { icon: <IconAutomatic />, label: "Automatic" },
-    ],
-    featured: false,
-  },
-  {
-    name: "Aston Martin DB11",
-    category: "Convertible",
-    price: "$480/day",
-    image: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=600&q=80",
-    specs: [
-      { icon: <IconPetrol />, label: "Petrol" },
-      { icon: <IconSeat />, label: "2 Seats" },
-      { icon: <IconAC />, label: "A/C" },
-      { icon: <IconAutomatic />, label: "Automatic" },
-    ],
-    featured: false,
-  },
-];
+// ─── CAR CARD ────────────────────────────────────────────
+function CarCard({ car, index }: { car: any; index: number }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-40px" });
 
-// ─── CARD ────────────────────────────────────────────────
-function CarCard({ car, index }) {
+  // Create specs array from car data
+  const specs = [
+    { icon: getFuelIcon(car.fuelType), label: getFuelLabel(car.fuelType) },
+    { icon: <IconSeat />, label: `${car.seats || 4} Seats` },
+    { icon: <IconAC />, label: "A/C" },
+    { icon: getTransmissionIcon(car.transmission), label: getTransmissionLabel(car.transmission) },
+  ];
+
+  // Determine if featured (you can customize this logic)
+  const isFeatured = car.status === 'AVAILABLE' && car.pricePerDay > 300;
+
+  // Use first image or fallback
+  const imageUrl = car.images?.[0] || "/porshe_hero.jpg";
+
+  // Create car name
+  const carName = `${car.brand || ''} ${car.model || ''}`.trim() || 'Luxury Vehicle';
+
   return (
     <motion.div
+      ref={ref}
       layout
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 20 }}
-      transition={{ duration: 0.45, delay: index * 0.06, ease: "easeOut" }}
-      className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col group"
+      initial={{ opacity: 0, y: 40 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.6, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ y: -6, transition: { duration: 0.4 } }}
+      className="group relative flex flex-col overflow-hidden"
+      style={{
+        background: "linear-gradient(160deg, #111111 0%, #0D0D0D 100%)",
+        border: "1px solid rgba(201,168,76,0.14)",
+      }}
     >
+      {/* Featured badge */}
+      {isFeatured && (
+        <div
+          className="absolute top-3.5 left-3.5 z-20 px-3 py-1 text-[8.5px] font-bold tracking-[0.3em] uppercase"
+          style={{ background: "linear-gradient(135deg, #8B7035, #C9A84C)", color: "#090909" }}
+        >
+          Featured
+        </div>
+      )}
+
       {/* Image */}
-      <div className="relative bg-gray-100 h-44 overflow-hidden">
-        <img
-          src={car.image}
-          alt={car.name}
-          className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-t-2xl"
+      <div className="relative h-48 overflow-hidden" style={{ background: "#0A0A0A" }}>
+        <div
+          className="absolute inset-0 z-10 pointer-events-none"
+          style={{ background: "linear-gradient(to top, rgba(13,13,13,1) 0%, rgba(13,13,13,0.3) 40%, transparent 100%)" }}
         />
-        {/* Price Badge */}
-        <span className="absolute top-3 right-3 bg-black text-white text-[10px] font-semibold px-3 py-1 rounded-full">
-          {car.price}
-        </span>
-        {/* Category Badge */}
-        <span className="absolute top-3 left-3 bg-white text-gray-700 text-[10px] font-medium px-3 py-1 rounded-full shadow-sm">
-          {car.category}
-        </span>
+        <div
+          className="absolute inset-0 z-[5] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+          style={{ background: "radial-gradient(ellipse at 50% 80%, rgba(201,168,76,0.1) 0%, transparent 70%)" }}
+        />
+        <motion.img
+          src={imageUrl}
+          alt={carName}
+          className="w-full h-full object-cover"
+          whileHover={{ scale: 1.06 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          style={{ filter: "brightness(0.82) saturate(0.9)" }}
+        />
+        
+        {/* Category badge - using fuel type or transmission as category */}
+        <div
+          className="absolute top-3.5 right-3.5 z-20 px-2.5 py-1 text-[8px] tracking-[0.28em] uppercase font-medium"
+          style={{
+            background: "rgba(9,9,9,0.75)",
+            color: "rgba(245,240,232,0.45)",
+            border: "1px solid rgba(201,168,76,0.12)",
+            backdropFilter: "blur(6px)",
+          }}
+        >
+          {car.fuelType || 'LUXURY'}
+        </div>
       </div>
 
-      {/* Card Body */}
-      <div className="p-4 flex flex-col gap-3 flex-1">
-        {/* Car Name */}
-        <h3 className="text-sm font-semibold text-gray-900">{car.name}</h3>
+      {/* Card body */}
+      <div className="flex flex-col gap-4 p-5 flex-1">
+        <div className="flex flex-col gap-1">
+          <h3
+            className="leading-tight tracking-[0.02em]"
+            style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "19px", fontWeight: 400, color: "#F5F0E8" }}
+          >
+            {carName}
+          </h3>
+          {car.year && (
+            <span className="text-[9px] tracking-[0.2em]" style={{ color: "#C9A84C" }}>
+              {car.year} • {car.color || ''}
+            </span>
+          )}
+        </div>
 
-        {/* Specs */}
+        <div className="flex items-center justify-between">
+          <span className="text-[10px] uppercase tracking-[0.2em]" style={{ color: "rgba(245,240,232,0.3)" }}>Per Day</span>
+          <span className="text-[15px] font-medium" style={{ fontFamily: "'Cormorant Garamond', serif", color: "#C9A84C" }}>
+            AED {car.pricePerDay}
+          </span>
+        </div>
+
+        <div className="h-px w-full" style={{ background: "rgba(201,168,76,0.12)" }} />
+
         <div className="flex flex-wrap gap-2">
-          {car.specs.map((spec) => (
+          {specs.map((spec) => (
             <span
               key={spec.label}
-              className="flex items-center gap-1 text-xs text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-[9.5px] tracking-[0.18em] uppercase font-medium"
+              style={{
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(201,168,76,0.12)",
+                color: "rgba(245,240,232,0.45)",
+              }}
             >
-              <span className="text-gray-600">{spec.icon}</span>
-              <span>{spec.label}</span>
+              <span style={{ color: "rgba(201,168,76,0.7)" }}>{spec.icon}</span>
+              {spec.label}
             </span>
           ))}
         </div>
 
-        {/* Divider */}
-        <div className="border-t border-gray-100 mt-1" />
+        <div className="flex-1" />
+        <div className="h-px w-full" style={{ background: "rgba(201,168,76,0.12)" }} />
 
-        {/* CTA Buttons */}
         <div className="flex gap-2">
-          <button className="flex-1 text-xs font-medium py-2.5 rounded-full border border-gray-200 text-gray-700 hover:bg-gray-100 transition">
-            View Details
-          </button>
-          <button className="flex-1 text-xs font-medium py-2.5 rounded-full bg-black text-white hover:bg-gray-800 transition">
-            Book Now
-          </button>
+          <motion.a
+            href={`/car/${car._id}`}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="flex-1 text-center text-[9.5px] font-semibold tracking-[0.25em] uppercase py-2.5 transition-all no-underline"
+            style={{ border: "1px solid rgba(201,168,76,0.3)", color: "#C9A84C" }}
+          >
+            Details
+          </motion.a>
+          <motion.a
+            href={`/reserve?car=${car._id}`}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="flex-1 text-center text-[9.5px] font-bold tracking-[0.25em] uppercase py-2.5 transition-all hover:bg-[#E8C97A] no-underline"
+            style={{ background: "linear-gradient(135deg, #8B7035, #C9A84C)", color: "#090909" }}
+          >
+            Reserve
+          </motion.a>
         </div>
       </div>
+
+      <div
+        className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        style={{ border: "1px solid rgba(201,168,76,0.28)" }}
+      />
     </motion.div>
   );
 }
 
-// ─── PAGE ────────────────────────────────────────────────
+// ─── MAIN PAGE ───────────────────────────────────────────
 export default function FleetPage() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [search, setSearch] = useState("");
 
-  const filtered = allCars.filter((car) => {
-    const matchCategory = activeCategory === "All" || car.category === activeCategory;
-    const matchSearch = car.name.toLowerCase().includes(search.toLowerCase());
+  const headerRef = useRef(null);
+  const headerInView = useInView(headerRef, { once: true, margin: "-80px" });
+
+  // Fetch real cars from backend
+  const { data: carsData, isLoading, error } = useCars();
+  const cars = carsData || [];
+
+  // Derive categories from actual data
+  const categories = useMemo(() => {
+    if (!cars.length) return ["All"];
+    const uniqueCategories = ['All', ...new Set(cars.map(car => car.fuelType || 'Luxury'))];
+    return uniqueCategories;
+  }, [cars]);
+
+  // Filter cars based on category and search
+  const filtered = cars.filter((car) => {
+    const carName = `${car.brand || ''} ${car.model || ''}`.toLowerCase();
+    const carCategory = car.fuelType || 'Luxury';
+    
+    const matchCategory = activeCategory === "All" || carCategory === activeCategory;
+    const matchSearch = carName.includes(search.toLowerCase());
     return matchCategory && matchSearch;
   });
 
-  
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="w-full min-h-screen bg-[#090909] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[#C9A84C] border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="w-full min-h-screen bg-[#090909] flex items-center justify-center text-white">
+        <div className="text-center">
+          <h3 className="text-xl mb-4">Failed to load vehicles</h3>
+          <button 
+            onClick={() => window.location.reload()}
+            className="px-6 py-2 bg-[#C9A84C] text-black"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <main className="min-h-screen mt-20">
-        <LuxuryNavbar />
+    <div className="w-full min-h-screen" style={{ background: "#090909" }}>
+      <LuxuryNavbar/>
+      
+      {/* Noise grain */}
+      <div
+        className="fixed inset-0 z-0 pointer-events-none opacity-[0.04]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+        }}
+      />
 
-      {/* ── Hero Banner ── */}
-      <section className="w-full bg-white px-6 md:px-16 lg:px-24 pt-16 pb-12">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+      {/* Top border */}
+      
+
+      <div className="relative z-10 max-w-[1320px] mx-auto px-6 md:px-12 lg:px-20 py-24 lg:py-32">
+
+        {/* ══ HEADER ══ */}
+        <div ref={headerRef} className="mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-12">
+          
+          {/* Left */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+           
+            className="flex flex-col gap-6"
           >
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">
-              Our Collection
-            </p>
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
-              Find Your<br />Perfect Ride
+            <div className="flex items-center gap-3">
+              <div className="w-px h-8" style={{ background: "linear-gradient(to bottom, transparent, #C9A84C, transparent)" }} />
+              <span className="text-[9px] font-semibold tracking-[0.45em] uppercase" style={{ color: "#C9A84C" }}>
+                Premium Collection
+              </span>
+            </div>
+            
+            <h1 className="leading-[0.9]" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(42px, 6vw, 78px)", fontWeight: 300, color: "#F5F0E8" }}>
+              Find Your <br />
+              <span style={{ background: "linear-gradient(135deg, #8B7035 0%, #C9A84C 55%, #E8C97A 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+                Perfect Ride
+              </span>
             </h1>
-            <p className="text-sm text-gray-400 mt-3 max-w-md leading-relaxed">
-              Explore our handpicked selection of premium vehicles tailored to suit every taste and occasion.
+            
+            <p className="text-[13px] leading-[1.85] max-w-lg" style={{ color: "rgba(245,240,232,0.38)" }}>
+              Explore our handpicked selection of {cars.length} premium vehicles tailored to suit every taste and occasion.
             </p>
           </motion.div>
 
-          {/* Stats */}
+          {/* Right - Stats */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.12, ease: "easeOut" }}
+           
             className="flex gap-8"
           >
-            {[["500+", "Luxury Cars"], ["60+", "Locations"], ["800+", "Happy Clients"]].map(([val, label]) => (
-              <div key={label} className="flex flex-col">
-                <span className="text-2xl font-bold text-gray-900">{val}</span>
-                <span className="text-xs text-gray-400 mt-0.5">{label}</span>
+            {[
+              [`${cars.length}+`, "Luxury Cars"], 
+              ["60+", "Locations"], 
+              ["800+", "Happy Clients"]
+            ].map(([val, label]) => (
+              <div key={label} className="flex flex-col gap-1">
+                <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "32px", fontWeight: 300, color: "#C9A84C", lineHeight: 1 }}>
+                  {val}
+                </span>
+                <span className="text-[9px] tracking-[0.25em] uppercase" style={{ color: "rgba(245,240,232,0.3)" }}>
+                  {label}
+                </span>
               </div>
             ))}
           </motion.div>
         </div>
-      </section>
 
-      {/* ── Filters + Search ── */}
-      <section className="w-full bg-white border-t border-gray-100 px-6 md:px-16 lg:px-24 py-5 sticky top-0 z-30 shadow-sm">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-
-          {/* Category Pills */}
-          <div className="flex flex-wrap gap-2">
+        {/* ══ FILTERS BAR ══ */}
+        <motion.div
+          
+          className="mb-12 p-6 flex flex-col md:flex-row gap-6"
+          style={{ background: "#111", border: "1px solid rgba(201,168,76,0.15)" }}
+        >
+          
+          {/* Category pills - dynamically generated from data */}
+          <div className="flex flex-wrap gap-2 flex-1">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`text-xs px-4 py-2 rounded-full font-medium transition-all ${
+                className="text-[10px] px-4 py-2 font-semibold tracking-[0.25em] uppercase transition-all duration-300"
+                style={
                   activeCategory === cat
-                    ? "bg-black text-white"
-                    : "bg-gray-100 text-gray-500 hover:bg-gray-200"
-                }`}
+                    ? { background: "linear-gradient(135deg, #8B7035, #C9A84C)", color: "#090909" }
+                    : { background: "transparent", border: "1px solid rgba(201,168,76,0.2)", color: "rgba(245,240,232,0.5)" }
+                }
               >
                 {cat}
               </button>
@@ -308,70 +355,77 @@ export default function FleetPage() {
           </div>
 
           {/* Search */}
-          <div className="relative w-full sm:w-56">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2">
+          <div className="relative md:w-64">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: "rgba(201,168,76,0.6)" }}>
               <IconSearch />
             </span>
             <input
               type="text"
-              placeholder="Search cars..."
+              placeholder="Search vehicles..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 text-xs border border-gray-200 rounded-full bg-gray-50 focus:outline-none focus:border-gray-400 transition"
+              className="w-full pl-10 pr-4 py-2.5 text-[11px] bg-transparent focus:outline-none transition-all duration-300"
+              style={{ border: "1px solid rgba(201,168,76,0.2)", color: "#F5F0E8" }}
             />
           </div>
-        </div>
-      </section>
+        </motion.div>
 
-      {/* ── Cars Grid ── */}
-      <section className="w-full px-6 md:px-16 lg:px-24 py-12">
-        <div className="max-w-6xl mx-auto">
-
-          {/* Result Count */}
+        {/* Result count */}
+        <AnimatePresence mode="wait">
           <motion.p
             key={activeCategory + search}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-xs text-gray-400 mb-6"
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="text-[11px] tracking-[0.2em] uppercase mb-8"
+            style={{ color: "rgba(245,240,232,0.35)" }}
           >
-            Showing <span className="text-gray-900 font-semibold">{filtered.length}</span> vehicles
+            Showing <span style={{ color: "#C9A84C" }}>{filtered.length}</span> vehicles
             {activeCategory !== "All" && (
-              <> in <span className="text-gray-900 font-semibold">{activeCategory}</span></>
+              <> in <span style={{ color: "#C9A84C" }}>{activeCategory}</span></>
             )}
           </motion.p>
+        </AnimatePresence>
 
-          {/* Grid */}
-          <AnimatePresence mode="popLayout">
-            {filtered.length > 0 ? (
-              <motion.div
-                layout
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+        {/* ══ CARS GRID ══ */}
+        <AnimatePresence mode="popLayout">
+          {filtered.length > 0 ? (
+            <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filtered.map((car, i) => (
+                <CarCard key={car._id} car={car} index={i} />
+              ))}
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex flex-col items-center justify-center py-24 text-center"
+            >
+              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "32px", fontWeight: 300, color: "rgba(245,240,232,0.2)" }}>
+                No Vehicles Found
+              </h3>
+              <p className="text-[12px] mt-3" style={{ color: "rgba(245,240,232,0.3)" }}>
+                Try adjusting your search or category filter.
+              </p>
+              <button
+                onClick={() => { setActiveCategory("All"); setSearch(""); }}
+                className="mt-6 px-6 py-3 text-[9.5px] font-bold tracking-[0.3em] uppercase transition-all hover:bg-[#E8C97A]"
+                style={{ background: "linear-gradient(135deg, #8B7035, #C9A84C)", color: "#090909" }}
               >
-                {filtered.map((car, i) => (
-                  <CarCard key={car.name} car={car} index={i} />
-                ))}
-              </motion.div>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="flex flex-col items-center justify-center py-24 text-center"
-              >
-                <p className="text-2xl font-bold text-gray-200">No cars found</p>
-                <p className="text-sm text-gray-400 mt-2">Try a different category or search term.</p>
-                <button
-                  onClick={() => { setActiveCategory("All"); setSearch(""); }}
-                  className="mt-5 bg-black text-white text-xs px-5 py-2.5 rounded-full hover:bg-gray-800 transition"
-                >
-                  Clear Filters
-                </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </section>
+                Clear Filters
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
       <Footer/>
 
-    </main>
+      <style jsx global>{`
+        input::placeholder { color: rgba(245,240,232,0.25); }
+        input:focus { border-color: rgba(201,168,76,0.6) !important; }
+      `}</style>
+    </div>
   );
 }
