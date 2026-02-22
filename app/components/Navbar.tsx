@@ -5,11 +5,22 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
+import { useUser } from "../hooks/useUser";
+
+
 
 export default function LuxuryNavbar() {
+  const { user } = useUser();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+// useEffect(() => {
+//   if (user) {
+//     console.log(user);
+//   }
+// }, [user]);
+
  
 
   useEffect(() => {
@@ -23,7 +34,7 @@ export default function LuxuryNavbar() {
 
   const navLinks = [
     { label: "Home", href: "/" },
-    { label: "Fleet", href: "/fleets" },
+    { label: "Fleet", href: "/fleet" },
     { label: "About Us", href: "/about" },
     { label: "Contact", href: "/contact" },
     { label: "Faq", href: "/faq" },
@@ -64,7 +75,7 @@ export default function LuxuryNavbar() {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 lg:px-12 py-6"
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 lg:px-12 py-2"
         style={{ 
           background: scrolled 
             ? "linear-gradient(to bottom, rgba(9,9,9,0.98), rgba(9,9,9,0.95))" 
@@ -73,17 +84,18 @@ export default function LuxuryNavbar() {
           backdropFilter: scrolled ? "blur(8px)" : "none",
         }}
       >
+        
         {/* Logo */}
         <a href="/" className="flex flex-col gap-0.5 no-underline group z-50">
           <span
-            className="text-[#C9A84C] tracking-[0.42em] leading-none font-light group-hover:tracking-[0.48em] transition-all duration-500"
+            className="text-[#C9A84C] tracking-[0.42em] flex justify-center items-center gap-2 leading-none font-light group-hover:tracking-[0.48em] transition-all duration-500"
             style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px" }}
           >
-            IFM Luxury
-          </span>
-          <span className="text-[7.5px] tracking-[0.45em] text-white/25 uppercase font-medium">
+           <img src="/ifm_logo.svg" alt="IFM Luxury" className="w-14 h-auto" /> <span className="flex flex-col">IFM Luxury  <span className="text-[7.5px] tracking-[0.45em] text-white/25 uppercase font-medium">
             car rentals
+          </span></span>
           </span>
+         
         </a>
 
         {/* Desktop Nav links */}
@@ -103,15 +115,28 @@ export default function LuxuryNavbar() {
 
         {/* Desktop Reserve CTA */}
         <div className="hidden md:flex items-center gap-2">
-         <a
+
+          {user ? (
+            <a
+              href="/auth"
+              className="relative overflow-hidden px-6 py-2.5 bg-transparent text-[#C9A84C] border border-[#C9A84C] text-[9.5px] font-bold tracking-[0.3em] uppercase no-underline group transition-all duration-300  hidden md:inline-block"
+            >
+              <span className="relative z-10">{user.firstName}</span>
+              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-500" />
+            </a>
+          ) : (
+             <a
           href="/auth"
           className="relative overflow-hidden px-6 py-2.5 bg-transparent text-[#C9A84C] border border-[#C9A84C] text-[9.5px] font-bold tracking-[0.3em] uppercase no-underline group transition-all duration-300  hidden md:inline-block"
         >
           <span className="relative z-10">Log In</span>
           <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-500" />
         </a>
+          )}
+
+        
         <a
-          href="/reserve"
+          href="/fleet"
           className="relative overflow-hidden px-6 py-2.5 bg-[#C9A84C] text-[#090909] text-[9.5px] font-bold tracking-[0.3em] uppercase no-underline group transition-all duration-300 hover:bg-[#E8C97A] hidden md:inline-block"
         >
           <span className="relative z-10">Reserve Now</span>
@@ -216,16 +241,25 @@ export default function LuxuryNavbar() {
                   className="flex flex-col gap-2"
                 >
 
+                  {user ?(
                    <a
+          href="/auth"
+          className="relative overflow-hidden block w-full text-center px-6 py-4 bg-transparent text-[#C9A84C] border border-[#C9A84C] text-[9.5px] font-bold tracking-[0.3em] uppercase no-underline group transition-all duration-300"
+        >
+          <span className="relative z-10">{user.firstName}</span>
+          <span className="absolute inset-0 bg-linear-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-500" />
+        </a>):(           <a
           href="/auth"
           className="relative overflow-hidden block w-full text-center px-6 py-4 bg-transparent text-[#C9A84C] border border-[#C9A84C] text-[9.5px] font-bold tracking-[0.3em] uppercase no-underline group transition-all duration-300"
         >
           <span className="relative z-10">Log In</span>
           <span className="absolute inset-0 bg-linear-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-500" />
-        </a>
+        </a>)}
+
+        
                   
                   <a
-                    href="/reserve"
+                    href="/fleet"
                     onClick={() => setMobileMenuOpen(false)}
                     className="relative overflow-hidden block w-full text-center px-6 py-4 bg-[#C9A84C] text-[#090909] text-[10px] font-bold tracking-[0.3em] uppercase no-underline group transition-all duration-300 hover:bg-[#E8C97A]"
                   >

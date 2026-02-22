@@ -2,10 +2,10 @@
 
 import { useState, useRef, useMemo } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useCars } from "../hook/useCar";
+import { useCars } from "../hooks/useCar";
 import LuxuryNavbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { IconAC, IconAutomatic, IconDiesel, IconElectric, IconHybrid, IconManual, IconPetrol, IconSearch, IconSeat } from "../Icons";
+import { IconAC, IconAutomatic, IconDiesel, IconElectric, IconHybrid, IconManual, IconPetrol, IconSearch, IconSeat, IconWhatsApp } from "../Icons";
 
 // ─── ICONS ───────────────────────────────────────────────
 
@@ -55,9 +55,11 @@ const getCategoriesFromCars = (cars: any[]) => {
 
 // ─── CAR CARD ────────────────────────────────────────────
 function CarCard({ car, index }: { car: any; index: number }) {
+const WHATSAPP_NUMBER = "+971559990003";
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
-
+  const waMsg = `Hi, I'm interested in renting the ${car.brand} ${car.model} ${car.year}. Please share availability and rates.`;
+const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waMsg)}`;
   // Create specs array from car data
   const specs = [
     { icon: getFuelIcon(car.fuelType), label: getFuelLabel(car.fuelType) },
@@ -172,7 +174,31 @@ function CarCard({ car, index }: { car: any; index: number }) {
               <span style={{ color: "rgba(201,168,76,0.7)" }}>{spec.icon}</span>
               {spec.label}
             </span>
+            
           ))}
+           <motion.a
+                    href={waLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-[9.5px] tracking-[0.18em] uppercase font-semibold no-underline transition-all duration-300 group/wa"
+                    style={{
+                      background: "rgba(37,211,102,0.08)",
+                      border: "1px solid rgba(37,211,102,0.28)",
+                      color: "rgba(37,211,102,0.85)",
+                    }}
+                    aria-label="Chat on WhatsApp"
+                    title="Enquire on WhatsApp"
+                  >
+                    <span
+                      className="transition-transform duration-200 group-hover/wa:scale-110"
+                      style={{ color: "rgba(37,211,102,0.9)" }}
+                    >
+                      <IconWhatsApp />
+                    </span>
+                    WhatsApp
+                  </motion.a>
         </div>
 
         <div className="flex-1" />
@@ -180,7 +206,7 @@ function CarCard({ car, index }: { car: any; index: number }) {
 
         <div className="flex gap-2">
           <motion.a
-            href={`/car/${car._id}`}
+            href={`/fleet/${car._id}`}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             className="flex-1 text-center text-[9.5px] font-semibold tracking-[0.25em] uppercase py-2.5 transition-all no-underline"
@@ -189,7 +215,7 @@ function CarCard({ car, index }: { car: any; index: number }) {
             Details
           </motion.a>
           <motion.a
-            href={`/reserve?car=${car._id}`}
+            href={`/fleet/${car._id}`}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             className="flex-1 text-center text-[9.5px] font-bold tracking-[0.25em] uppercase py-2.5 transition-all hover:bg-[#E8C97A] no-underline"
@@ -198,6 +224,7 @@ function CarCard({ car, index }: { car: any; index: number }) {
             Reserve
           </motion.a>
         </div>
+         
       </div>
 
       <div

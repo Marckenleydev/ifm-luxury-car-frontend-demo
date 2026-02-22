@@ -17,6 +17,44 @@ export type Car = {
   updatedAt: string;
 }
 
+
+export interface LoginData {
+  email: string;
+  password: string;
+  rememberMe?: boolean;
+}
+
+export interface RegisterData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  password: string;
+}
+
+// Types to match your Prisma schema
+export type UserProfile = {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+  addresses: Address[];
+  
+ 
+};
+
+
+export type Address = {
+  id: string;
+ 
+  street: string
+  postalCode: string
+  city: string
+  country: string
+};
+
+
 // API Response type
 export type CarsApiResponse = {
   success: boolean;
@@ -27,4 +65,41 @@ export type CarsApiResponse = {
 export type CarApiResponse = {
   success: boolean;
   data: Car;
+}
+
+export interface Booking {
+  _id: string;
+  user: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+  car: {
+    _id: string;
+    brand: string;
+    model: string;
+    year: number;
+    images: string[];
+    pricePerDay: number;
+  };
+  startDate: string;
+  endDate: string;
+  totalPrice: number;
+  status: "PENDING" | "CONFIRMED" | "COMPLETED" | "CANCELLED";
+  createdAt: string;
+}
+
+export interface CreateMessageDTO {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  subject: string;
+  message: string;
+}
+
+export interface CreateTestimonialDTO {
+  rating: number;
+  comment: string;
 }

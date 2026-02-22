@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import InputField from "./InputField";
 import PasswordStrength from "./PasswordStrength";
 import { IconUser, IconMail, IconPhone, IconLock, IconEye, IconCheck } from "../../Icons";
+import { useAuth } from "../../hooks/useAuth"; // <-- your hook
+import { useRouter } from "next/navigation";
 
 interface RegisterFormProps {
   onSwitch: () => void;
@@ -18,14 +20,32 @@ export default function RegisterForm({ onSwitch }: RegisterFormProps) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [agreed, setAgreed] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => 
+  const { register, registerLoading } = useAuth(); // <-- useAuth register mutation
+  const router = useRouter();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (form.password !== form.confirm) return alert("Passwords do not match.");
     if (!agreed) return alert("Please agree to the terms.");
-    alert("Account created!");
+
+    try {
+      await register({
+        firstName: form.firstName,
+        lastName: form.lastName,
+        email: form.email,
+        phone: form.phone,
+        password: form.password,
+      });
+
+      alert("Account created successfully!");
+      router.push("/"); // <-- navigate to home page after register
+    } catch (err: any) {
+      alert(err?.response?.data?.message || "Failed to create account.");
+    }
   };
 
   return (
@@ -93,15 +113,15 @@ export default function RegisterForm({ onSwitch }: RegisterFormProps) {
             {agreed && <IconCheck />}
           </div>
           <span className="text-[10px] leading-relaxed" style={{ color: "rgba(245,240,232,0.45)" }}>
-            I agree to AURUM's{" "}
+            I agree to IFM Luxury&apos;s{" "}
             <span style={{ color: "#C9A84C" }}>Terms of Service</span>{" "}
             and{" "}
             <span style={{ color: "#C9A84C" }}>Privacy Policy</span>
           </span>
         </button>
 
-        <button type="submit" className="w-full py-3.5 text-[10px] font-bold tracking-[0.35em] uppercase transition-all duration-300 hover:bg-[#E8C97A]" style={{ background: "linear-gradient(135deg, #8B7035, #C9A84C)", color: "#090909" }}>
-          Create Account
+        <button type="submit" disabled={registerLoading} className="w-full py-3.5 text-[10px] font-bold tracking-[0.35em] uppercase transition-all duration-300 hover:bg-[#E8C97A]" style={{ background: "linear-gradient(135deg, #8B7035, #C9A84C)", color: "#090909" }}>
+          {registerLoading ? "Creating..." : "Create Account"}
         </button>
       </form>
 

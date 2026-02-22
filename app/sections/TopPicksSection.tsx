@@ -5,7 +5,7 @@ import { useRef, useState, useCallback } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
-import { useCars } from "../hook/useCar";
+import { useCars } from "../hooks/useCar";
 
 // ─── SWIPER CSS (add to globals.css if not already present) ─
 // import "swiper/css";
@@ -203,7 +203,7 @@ function CarCard({ car, index }: { car: Car; index: number }) {
 
         {/* View arrow */}
         <motion.a
-          href={`/fleets/${car._id}`}
+          href={`/fleet/${car._id}`}
           animate={{ x: hovered ? 2 : 0 }}
           transition={{ duration: 0.2 }}
           className="flex items-center gap-1.5 no-underline group/link"

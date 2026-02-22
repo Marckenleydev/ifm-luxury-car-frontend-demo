@@ -17,20 +17,18 @@ export const api = axios.create({
 // Token management
 const getToken = () => {
   if (typeof window === 'undefined') return null;
-  return localStorage.getItem('accessToken') || sessionStorage.getItem('accessToken');
+  return localStorage.getItem('accessToken');
 };
 
-const setToken = (token: string, rememberMe: boolean) => {
-  if (rememberMe) {
+const setToken = (token: string) => {
+
     localStorage.setItem('accessToken', token);
-  } else {
-    sessionStorage.setItem('accessToken', token);
-  }
+ 
 };
 
 const clearTokens = () => {
   localStorage.removeItem('accessToken');
-  sessionStorage.removeItem('accessToken');
+ 
 };
 
 // Request interceptor to add token
@@ -65,8 +63,8 @@ api.interceptors.response.use(
         
         if (accessToken) {
           // Store the new token
-          const rememberMe = localStorage.getItem('rememberMe') === 'true';
-          setToken(accessToken, rememberMe);
+         
+          setToken(accessToken);
           
           // Update the Authorization header
           originalRequest.headers.Authorization = `Bearer ${accessToken}`;
@@ -77,7 +75,7 @@ api.interceptors.response.use(
       } catch (refreshError) {
         console.error('Token refresh failed:', refreshError);
         clearTokens();
-        window.location.href = '/login'; // Redirect to login
+       // Redirect to login
         return Promise.reject(refreshError);
       }
     }

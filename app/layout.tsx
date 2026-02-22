@@ -2,12 +2,16 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "./providers";
 import Image from "next/image";
+import { Toaster } from "sonner";
 
 
 
 export const metadata: Metadata = {
   title: "IFM Luxury Car Rentals",
   description: "IFM Luxury Car Rentals - Your elite driving experience",
+  icons: {
+    icon: '/ifm_logo.svg', // Optional: specify custom icon
+  },
 };
 
 export default function RootLayout({
@@ -21,6 +25,15 @@ export default function RootLayout({
       <body
         className={``}
       >
+          <Toaster  position="top-center"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: '#111',
+              border: '1px solid rgba(201,168,76,0.3)',
+              color: '#F5F0E8',
+            },
+          }} />
         <Providers>
           {children}
         </Providers>

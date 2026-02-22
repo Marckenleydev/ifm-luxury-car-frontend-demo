@@ -82,7 +82,8 @@ export default function AboutPage() {
               </p>
               
               <div className="flex gap-3 mt-8">
-                <button
+                <a
+                  href="/fleet"
                   className="px-6 py-3 text-[9px] font-bold tracking-[0.25em] uppercase transition-all"
                   style={{
                     background: "linear-gradient(135deg, #8B7035, #C9A84C)",
@@ -90,8 +91,9 @@ export default function AboutPage() {
                   }}
                 >
                   Explore Our Fleet <IconArrow />
-                </button>
-                <button
+                </a>
+                <a
+                  href="/contact"
                   className="px-6 py-3 text-[9px] font-bold tracking-[0.25em] uppercase transition-all"
                   style={{
                     border: "1px solid rgba(201,168,76,0.3)",
@@ -99,7 +101,7 @@ export default function AboutPage() {
                   }}
                 >
                   Contact Us
-                </button>
+                </a>
               </div>
             </motion.div>
 
@@ -499,7 +501,8 @@ export default function AboutPage() {
             </p>
           </div>
           <div className="flex gap-3 flex-shrink-0">
-            <button
+            <a
+              href="/fleet"
               className="px-6 py-3 text-[9px] font-bold tracking-[0.25em] uppercase transition-all"
               style={{
                 background: "linear-gradient(135deg, #8B7035, #C9A84C)",
@@ -507,8 +510,9 @@ export default function AboutPage() {
               }}
             >
               Browse Fleet <IconArrow />
-            </button>
-            <button
+            </a>
+            <a
+              href="/contact"
               className="px-6 py-3 text-[9px] font-bold tracking-[0.25em] uppercase transition-all"
               style={{
                 border: "1px solid rgba(201,168,76,0.3)",
@@ -516,7 +520,7 @@ export default function AboutPage() {
               }}
             >
               Contact Us
-            </button>
+            </a>
           </div>
         </motion.div>
       </div>

@@ -1,4 +1,4 @@
-import { IconClock, IconShield,  IconStarOutline, IconUsers } from "../Icons";
+import { IconClock, IconLocation, IconMail, IconPhone, IconShield,  IconStarOutline, IconUsers } from "../Icons";
 
 
 export const faqs = [
@@ -166,7 +166,7 @@ export const promises = [
 export const footerLinks = {
   company: [
     { label: "About Us", href: "/about" },
-    { label: "Our Fleet", href: "/fleets" },
+    { label: "Our Fleet", href: "/fleet" },
     { label: "Locations", href: "/contact" },
     { label: "Careers", href: "/careers" },
   ],
@@ -183,3 +183,39 @@ export const footerLinks = {
     { label: "Terms & Conditions", href: "/faq" },
   ],
 };
+
+export const contactInfo = [
+  {
+    icon: <IconPhone />,
+    label: "Phone",
+    value: "+971 55 999 0003",
+    sub: "Mon – Fri, 9am to 6pm",
+  },
+  {
+    icon: <IconMail />,
+    label: "Email",
+    value: "ifmluxurycarrental@gmail.com",
+    sub: "We reply within 2 hours",
+  },
+  {
+    icon: <IconLocation />,
+    label: "Headquarters",
+    value: "Deira - Riggat Al Buteen - 4th St - Deira Suites Business Tower - 2nd Floor - Office No: 205",
+    sub: "Dubai, UAE",
+  },
+  {
+    icon: <IconClock />,
+    label: "Working Hours",
+    value: "24/7 Concierge",
+    sub: "Always here for you",
+  },
+];
+
+export const offices = [
+  {
+    city: "Dubai Deira - Riggat Al Buteen",
+    address: " 4th St - Deira Suites Business Tower",
+    phone: "+971 55 999 0003",
+    email: "ifmluxurycarrental@gmail.com",
+  },
+];

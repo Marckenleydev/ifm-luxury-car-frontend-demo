@@ -71,21 +71,21 @@ export default function Footer() {
               <a href="tel:+1234567890" className="flex items-center gap-2.5 no-underline group">
                 <span style={{ color: "rgba(201,168,76,0.6)" }}><PhoneIcon /></span>
                 <span className="text-[11px] transition-colors duration-300" style={{ color: "rgba(245,240,232,0.4)" }}>
-                  +1 (234) 567-890
+                  +971 55 999 0003
                 </span>
               </a>
 
               <a href="mailto:info@aurum.com" className="flex items-center gap-2.5 no-underline group">
                 <span style={{ color: "rgba(201,168,76,0.6)" }}><MailIcon /></span>
                 <span className="text-[11px] transition-colors duration-300" style={{ color: "rgba(245,240,232,0.4)" }}>
-                  reserve@aurum.com
+                  ifmluxurycarrental@gmail.com
                 </span>
               </a>
 
               <div className="flex items-start gap-2.5">
                 <span style={{ color: "rgba(201,168,76,0.6)" }}><LocationIcon /></span>
                 <span className="text-[11px]" style={{ color: "rgba(245,240,232,0.4)" }}>
-                  123 Luxury Boulevard<br />Dubai, UAE
+                  Deira - Riggat Al Buteen - 4th St - Deira Suites Business Tower - 2nd Floor - Office No: 205 {"\u00A0"}<br />Dubai, UAE
                 </span>
               </div>
             </div>

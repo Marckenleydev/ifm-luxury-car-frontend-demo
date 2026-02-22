@@ -24,7 +24,7 @@ export const useCars = () => {
 
 export const useCar = (id: string) => {
   return useQuery({
-    queryKey: ["car", id],
+    queryKey: ["cars", id],
     enabled: !!id,
     queryFn: async () => {
       const res = await api.get(`/api/cars/${id}`);
