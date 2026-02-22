@@ -25,17 +25,17 @@ export const useAuth = () => {
 
     const { accessToken } = res.data; // ✅ FIX HERE
 
-    if (rememberMe) {
-      localStorage.setItem("accessToken", accessToken);
-    } else {
-      sessionStorage.setItem("accessToken", accessToken);
+    if(accessToken){
+     localStorage.setItem("accessToken", accessToken);
     }
+      
+    
 
     return accessToken;
   },
   onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ["users"] });
-    router.push("/");
+    queryClient.invalidateQueries({ queryKey: ["user"] });
+    router.push("/admin");
     toast.success("Login successful!");
   },
   onError: (error: any) => {
