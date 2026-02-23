@@ -435,15 +435,15 @@ export default function AboutPage() {
                 We don't just rent cars — we craft experiences. Every interaction with Dream Drive is designed to exceed your expectations from start to finish.
               </p>
               
-              <button
+              <a href="/fleet"
                 className="px-6 py-3 text-[9px] font-bold tracking-[0.25em] uppercase transition-all"
                 style={{
                   background: "linear-gradient(135deg, #8B7035, #C9A84C)",
                   color: "#090909",
                 }}
               >
-                Book Your Ride <IconArrow />
-              </button>
+                Book Your Ride →
+              </a>
             </motion.div>
 
             {/* Right - Promise List */}

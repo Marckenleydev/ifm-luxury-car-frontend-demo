@@ -404,7 +404,7 @@ export default function SimpleFastSection() {
             className="hidden md:flex flex-col items-end gap-3"
           >
             <a
-              href="/reserve"
+              href="/fleet"
               className="relative overflow-hidden inline-flex items-center gap-3 px-8 py-3.5 text-[9.5px] font-bold tracking-[0.3em] uppercase no-underline group"
               style={{
                 background: "linear-gradient(135deg, #8B7035, #C9A84C)",
@@ -459,7 +459,7 @@ export default function SimpleFastSection() {
           className="flex justify-center mt-10 md:hidden"
         >
           <a
-            href="/reserve"
+            href="/fleet"
             className="inline-flex items-center gap-2.5 px-8 py-3.5 text-[9.5px] font-bold tracking-[0.3em] uppercase no-underline"
             style={{
               background: "linear-gradient(135deg, #8B7035, #C9A84C)",

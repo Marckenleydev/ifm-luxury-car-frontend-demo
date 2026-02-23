@@ -75,7 +75,7 @@ export default function Footer() {
                 </span>
               </a>
 
-              <a href="mailto:info@aurum.com" className="flex items-center gap-2.5 no-underline group">
+              <a href="mailto:ifmluxurycarrental@gmail.com" className="flex items-center gap-2.5 no-underline group">
                 <span style={{ color: "rgba(201,168,76,0.6)" }}><MailIcon /></span>
                 <span className="text-[11px] transition-colors duration-300" style={{ color: "rgba(245,240,232,0.4)" }}>
                   ifmluxurycarrental@gmail.com

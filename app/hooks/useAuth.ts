@@ -35,7 +35,7 @@ export const useAuth = () => {
   },
   onSuccess: () => {
     queryClient.invalidateQueries({ queryKey: ["user"] });
-    router.push("/admin");
+    router.push("/");
     toast.success("Login successful!");
   },
   onError: (error: any) => {

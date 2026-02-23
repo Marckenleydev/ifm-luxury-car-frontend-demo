@@ -161,12 +161,12 @@ export default function FAQSection() {
 
             {/* CTA Button */}
             <button className="relative group w-fit flex items-center gap-3 overflow-hidden">
-              <span className="relative z-10 flex items-center gap-2 bg-gradient-to-r from-[#C9A84C] to-[#a8863c] text-black text-xs font-semibold px-6 py-3 transition-all group-hover:from-[#d4b35a] group-hover:to-[#C9A84C]">
+              <a href="/contact" className="relative z-10 flex items-center gap-2 bg-gradient-to-r from-[#C9A84C] to-[#a8863c] text-black text-xs font-semibold px-6 py-3 transition-all group-hover:from-[#d4b35a] group-hover:to-[#C9A84C]">
                 Contact Concierge
                 <svg className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                 </svg>
-              </span>
+              </a>
             </button>
 
             {/* Trust badge */}
@@ -198,9 +198,9 @@ export default function FAQSection() {
               className="text-xs text-gray-600 text-center mt-3"
             >
               Still have questions?{" "}
-              <button className="text-[#C9A84C] hover:text-[#d4b35a] font-medium transition-colors">
+              <a href="/faq" className="text-[#C9A84C] hover:text-[#d4b35a] font-medium transition-colors">
                 Browse our full help center →
-              </button>
+              </a>
             </motion.p>
           </div>
 

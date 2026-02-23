@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import LuxuryNavbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { faqs } from "../data";
-import { IconCar, IconCalendar, IconShield, IconCreditCard, IconLocation, IconHeadset, IconSearch, IconArrow } from "../Icons";
+import { IconCar, IconCalendar, IconShield, IconCreditCard, IconLocation, IconHeadset, IconSearch, IconArrow, IconWhatsApp } from "../Icons";
 
 // Gold ornament component
 const GoldOrnament = () => (
@@ -328,24 +328,34 @@ export default function FAQPage() {
                   Our support team is available 24/7 to answer your questions and resolve any issues.
                 </p>
                 <div className="flex flex-col gap-2 mt-2">
-                  <button
-                    className="w-full py-3 text-[9px] font-bold tracking-[0.25em] uppercase transition-all"
-                    style={{
-                      background: "linear-gradient(135deg, #8B7035, #C9A84C)",
-                      color: "#090909",
-                    }}
-                  >
-                    Chat with Us
-                  </button>
-                  <button
-                    className="w-full py-3 text-[9px] font-bold tracking-[0.25em] uppercase transition-all"
-                    style={{
-                      border: "1px solid rgba(201,168,76,0.3)",
-                      color: "#C9A84C",
-                    }}
-                  >
-                    Send an Email
-                  </button>
+                   <a
+                            href={`https://wa.me/+971559990003?text=${encodeURIComponent("Hello I’m interested in your luxury car rental services. Can you share availability and pricing? ")}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center gap-2.5 px-6 py-3 no-underline transition-all duration-300 hover:bg-[rgba(37,211,102,0.15)] w-full"
+                            style={{
+                              background: "rgba(37,211,102,0.1)",
+                              border: "1px solid rgba(37,211,102,0.3)",
+                              color: "rgba(37,211,102,0.9)",
+                            }}
+                          >
+                            <IconWhatsApp />
+                            <span className="text-[9.5px] font-bold tracking-[0.28em] uppercase">
+                              WhatsApp
+                            </span>
+                          </a>
+                  <a
+                    
+  href="mailto:ifmluxurycarrental@gmail.com?subject=Inquiry%20About%20Luxury%20Car%20Rental&body=Hello%2C%0D%0A%0D%0AI%20would%20like%20to%20inquire%20about%20renting%20a%20luxury%20vehicle.%0D%0A%0D%0AThank%20you%2C%0D%0A[Your%20Name]"
+  className="w-full py-3 text-[9px] font-bold tracking-[0.25em] uppercase transition-all inline-block text-center"
+  style={{
+    border: "1px solid rgba(201,168,76,0.3)",
+    color: "#C9A84C",
+    textDecoration: "none",
+  }}
+>
+  Send an Email
+</a>
                 </div>
               </div>
             </div>

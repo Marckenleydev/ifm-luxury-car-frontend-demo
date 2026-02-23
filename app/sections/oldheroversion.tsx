@@ -1,9 +1,19 @@
+
+
+
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, EffectFade, Keyboard } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
 import LuxuryNavbar from "../components/Navbar";
+
+// Import Swiper styles — add these to your global CSS or layout
+// import "swiper/css";
+// import "swiper/css/effect-fade";
 
 // ─── TYPES ───────────────────────────────────────────────
 type CarSlide = {
@@ -152,9 +162,8 @@ function ProgressBar({ progress }: { progress: number }) {
 export default function HeroSection() {
   const [current, setCurrent] = useState(0);
   const [progress, setProgress] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const swiperRef = useRef<SwiperType | null>(null);
   const progressTimer = useRef<ReturnType<typeof setInterval> | null>(null);
-  const autoplayTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Magnetic cursor effect
   const cursorX = useMotionValue(0);
@@ -184,52 +193,35 @@ export default function HeroSection() {
     }, 60);
   }, []);
 
-  // Autoplay functionality
-  const startAutoplay = useCallback(() => {
-    if (autoplayTimer.current) clearTimeout(autoplayTimer.current);
-    autoplayTimer.current = setTimeout(() => {
-      setCurrent((prev) => (prev + 1) % slides.length);
-    }, SLIDE_DURATION);
-  }, []);
-
   useEffect(() => {
     startProgress();
-    startAutoplay();
     return () => {
       if (progressTimer.current) clearInterval(progressTimer.current);
-      if (autoplayTimer.current) clearTimeout(autoplayTimer.current);
     };
-  }, [current, startProgress, startAutoplay]);
-
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") {
-        goTo(Math.max(0, current - 1));
-      } else if (e.key === "ArrowRight") {
-        goTo(Math.min(slides.length - 1, current + 1));
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [current]);
+  }, [current, startProgress]);
 
   const goTo = (index: number) => {
-    if (index === current || isTransitioning) return;
-    setIsTransitioning(true);
+    if (index === current) return;
     setCurrent(index);
+    swiperRef.current?.slideTo(index);
     startProgress();
-    startAutoplay();
-    setTimeout(() => setIsTransitioning(false), 700);
   };
 
   const slide = slides[current];
+
+  const navLinks = [
+    { label: "Home", href: "/" },
+    { label: "Fleet", href: "/fleets" },
+    { label: "About Us", href: "/about" },
+    { label: "Contact", href: "/contact" },
+    { label: "Faq", href: "/faq" },
+  ];
 
   return (
     <>
       {/* ── CUSTOM CURSOR ─────────────────────── */}
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 rounded-full border border-[#C9A84C]/60 pointer-events-none z-[9999] mix-blend-difference hidden lg:block"
+        className="fixed top-0 left-0 w-8 h-8 rounded-full border border-[#C9A84C]/60 pointer-events-none z-[9999] mix-blend-difference"
         style={{ x: springX, y: springY }}
       />
 
@@ -267,16 +259,26 @@ export default function HeroSection() {
         <LuxuryNavbar />
 
         {/* ══════════════════════════════════════
-            HERO BODY — CUSTOM CAROUSEL
+            HERO BODY — SWIPER
         ══════════════════════════════════════ */}
         <div className="relative flex-1 overflow-hidden">
-          <div className="relative w-full h-full">
+          <Swiper
+            modules={[Autoplay, EffectFade, Keyboard]}
+            effect="fade"
+            fadeEffect={{ crossFade: true }}
+            autoplay={{ delay: SLIDE_DURATION, disableOnInteraction: false }}
+            keyboard={{ enabled: true }}
+            speed={700}
+            loop={false}
+            onSwiper={(swiper) => (swiperRef.current = swiper)}
+            onSlideChange={(swiper) => {
+              setCurrent(swiper.activeIndex);
+              startProgress();
+            }}
+            className="w-full h-full"
+          >
             {slides.map((s, idx) => (
-              <div
-                key={s.brand}
-                className="absolute inset-0 w-full h-full transition-opacity duration-700"
-                style={{ opacity: current === idx ? 1 : 0, pointerEvents: current === idx ? 'auto' : 'none' }}
-              >
+              <SwiperSlide key={s.brand} className="relative w-full h-full">
                 {/* Atmospheric background glow */}
                 <AnimatePresence>
                   {current === idx && (
@@ -446,7 +448,7 @@ export default function HeroSection() {
                             className="flex items-center gap-6"
                           >
                             <a
-                              href="/fleet"
+                              href="/reserve"
                               className="relative overflow-hidden group inline-flex items-center gap-3 px-8 py-3.5 bg-[#C9A84C] text-[#090909] text-[9.5px] font-bold tracking-[0.32em] uppercase no-underline transition-colors duration-300 hover:bg-[#E8C97A]"
                             >
                               <span className="relative z-10">Reserve This Car</span>
@@ -474,9 +476,9 @@ export default function HeroSection() {
                     </AnimatePresence>
                   </div>
                 </div>
-              </div>
+              </SwiperSlide>
             ))}
-          </div>
+          </Swiper>
 
           {/* ── SIDE VERTICAL NAVIGATION ─────── */}
           <div className="absolute right-8 top-1/2 -translate-y-1/2 z-20 hidden lg:flex flex-col items-center gap-3.5">
