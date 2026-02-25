@@ -352,7 +352,7 @@ export default function AboutPage() {
         </section>
 
         {/* ── Team ── */}
-        <section className="w-full mb-20">
+        {/* <section className="w-full mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -405,7 +405,7 @@ export default function AboutPage() {
               </motion.div>
             ))}
           </div>
-        </section>
+        </section> */}
 
         {/* ── Our Promise ── */}
         <section className="w-full mb-20">

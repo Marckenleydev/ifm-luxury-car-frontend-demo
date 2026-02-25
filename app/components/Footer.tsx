@@ -193,7 +193,7 @@ export default function Footer() {
           {/* Legal links */}
           <div className="flex items-center gap-4">
             <a
-              href="/privacy"
+              href="/faq"
               className="text-[10px] tracking-[0.2em] uppercase no-underline transition-colors duration-300 hover:text-[#C9A84C]"
               style={{ color: "rgba(245,240,232,0.25)" }}
             >
@@ -201,7 +201,7 @@ export default function Footer() {
             </a>
             <span style={{ color: "rgba(245,240,232,0.15)" }}>·</span>
             <a
-              href="/terms"
+              href="/faq"
               className="text-[10px] tracking-[0.2em] uppercase no-underline transition-colors duration-300 hover:text-[#C9A84C]"
               style={{ color: "rgba(245,240,232,0.25)" }}
             >

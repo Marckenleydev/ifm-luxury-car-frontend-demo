@@ -107,6 +107,28 @@ export default function RootLayout({
             },
           }} />
         <Providers>
+
+          {/* ✅ Structured Data for SEO */}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "CarRental",
+                name: "IFM Luxury Car Rentals",
+                image: "https://www.ifmluxurycars.com/og-image.jpg",
+                url: "https://www.ifmluxurycars.com",
+                telephone: "+971559990003",
+                address: {
+                  "@type": "PostalAddress",
+                  addressLocality: "Dubai",
+                  addressCountry: "AE",
+                },
+                areaServed: "United Arab Emirates",
+                priceRange: "$$$$",
+              }),
+            }}
+          />
           {children}
         </Providers>
         <div className="fixed bottom-6 right-6 z-9999 pointer-events-auto">
@@ -122,6 +144,22 @@ export default function RootLayout({
           <Image src="/whatsapp.svg" alt="WhatsApp" width={42} height={42} />
         </a>
       </div>
+
+
+      <div className="fixed bottom-26 right-6 z-[9999] md:bottom-30">
+  <a
+    href="tel:+971559990003"
+    className="relative call-ring w-16 h-16 rounded-full bg-black border border-[#C9A84C] flex items-center justify-center shadow-2xl"
+  >
+    <svg
+      className="w-7 h-7 text-[#C9A84C]"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path d="M6.62 10.79a15.466 15.466 0 006.59 6.59l2.2-2.2a1 1 0 011-.24 11.36 11.36 0 003.56.57 1 1 0 011 1V20a1 1 0 01-1 1C10.85 21 3 13.15 3 3a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.56 1 1 0 01-.24 1l-2.21 2.23z" />
+    </svg>
+  </a>
+</div>
       </body>
     </html>
   );

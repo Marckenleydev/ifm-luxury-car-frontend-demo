@@ -336,14 +336,14 @@ export default function SingleCarPage() {
                 <div className="h-px" style={{ background: "rgba(201,168,76,0.1)" }} />
                 <div className="flex gap-2">
                   <a 
-                    href={`/cars/${rc._id}`} 
+                    href={`/fleet/${rc._id}`} 
                     className="flex-1 text-center text-[9.5px] font-semibold tracking-[0.25em] uppercase py-2.5 transition-all no-underline" 
                     style={{ border: "1px solid rgba(201,168,76,0.3)", color: "#C9A84C" }}
                   >
                     View
                   </a>
                   <a 
-                    href={`/reserve?car=${rc._id}`} 
+                    href={`/fleet`} 
                     className="flex-1 text-center text-[9.5px] font-bold tracking-[0.25em] uppercase py-2.5 transition-all hover:bg-[#E8C97A] no-underline" 
                     style={{ background: "linear-gradient(135deg, #8B7035, #C9A84C)", color: "#0a0a0a" }}
                   >
