@@ -7,6 +7,7 @@ import PasswordStrength from "./PasswordStrength";
 import { IconUser, IconMail, IconPhone, IconLock, IconEye, IconCheck } from "../../Icons";
 import { useAuth } from "../../hooks/useAuth"; // <-- your hook
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface RegisterFormProps {
   onSwitch: () => void;
@@ -29,8 +30,8 @@ export default function RegisterForm({ onSwitch }: RegisterFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (form.password !== form.confirm) return alert("Passwords do not match.");
-    if (!agreed) return alert("Please agree to the terms.");
+    if (form.password !== form.confirm) return toast.error("Passwords do not match.");
+    if (!agreed) return toast.error("Please agree to the terms.");
 
     try {
       await register({
@@ -40,11 +41,12 @@ export default function RegisterForm({ onSwitch }: RegisterFormProps) {
         phone: form.phone,
         password: form.password,
       });
+      
 
-      alert("Account created successfully!");
+      toast.success("Account created successfully!");
       router.push("/"); // <-- navigate to home page after register
     } catch (err: any) {
-      alert(err?.response?.data?.message || "Failed to create account.");
+      toast.error(err?.response?.data?.message || "Failed to create account.");
     }
   };
 
