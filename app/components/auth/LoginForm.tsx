@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import InputField from "./InputField";
@@ -172,7 +173,7 @@ export default function LoginForm({ onSwitch }: LoginFormProps) {
       >
         Forgot your password?{" "}
         <a
-          href="/forgot_password"
+          href="/forgot-password"
           className="font-semibold transition-colors duration-300"
           style={{ color: "#C9A84C" }}
         >
