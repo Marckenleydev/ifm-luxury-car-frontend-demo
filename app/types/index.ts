@@ -103,3 +103,16 @@ export interface CreateTestimonialDTO {
   rating: number;
   comment: string;
 }
+
+export interface OfficeContact {
+  _id?: string;
+  email: string;
+  phone?: string;
+  country?: string;
+  city?: string;
+  district?: string;
+  HeadquartersFullAddress?: string;
+  OfficeFullAddress?: string[];
+  createdAt?: string;
+  updatedAt?: string;
+}

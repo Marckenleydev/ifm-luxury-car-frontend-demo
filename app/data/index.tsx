@@ -1,5 +1,5 @@
 import { IconClock, IconLocation, IconMail, IconPhone, IconShield,  IconStarOutline, IconUsers } from "../Icons";
-
+import { useOfficeContact } from "../hooks/useContact";
 
 export const faqs = [
   {
@@ -184,7 +184,9 @@ export const footerLinks = {
   ],
 };
 
+
 export const contactInfo = [
+  
   {
     icon: <IconPhone />,
     label: "Phone",

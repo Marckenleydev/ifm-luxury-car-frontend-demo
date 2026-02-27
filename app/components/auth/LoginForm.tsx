@@ -152,6 +152,7 @@ export default function LoginForm({ onSwitch }: LoginFormProps) {
         </button>
       </form>
 
+<div className="flex flex-col gap-2">
       <p
         className="text-center text-[11px]"
         style={{ color: "rgba(245,240,232,0.35)" }}
@@ -165,6 +166,20 @@ export default function LoginForm({ onSwitch }: LoginFormProps) {
           Create one
         </button>
       </p>
+       <p
+        className="text-center text-[11px]"
+        style={{ color: "rgba(245,240,232,0.35)" }}
+      >
+        Forgot your password?{" "}
+        <a
+          href="/forgot-password"
+          className="font-semibold transition-colors duration-300"
+          style={{ color: "#C9A84C" }}
+        >
+          Reset password
+        </a>
+      </p>
+      </div>
     </motion.div>
   );
 }

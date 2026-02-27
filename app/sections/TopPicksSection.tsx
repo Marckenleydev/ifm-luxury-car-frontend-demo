@@ -5,49 +5,10 @@ import { useRef, useState, useCallback } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
-import { useCars } from "../hooks/useCar";
+import { useTenCarsMostRented } from "../hooks/useCar";
+import LuxuryLoader from "../components/LuxuryLoader";
 
-// ─── SWIPER CSS (add to globals.css if not already present) ─
-// import "swiper/css";
 
-// ─── DATA ────────────────────────────────────────────────
-// const cars = [
-//   {
-//     name: "Aston Martin",
-//     model: "DB12 Coupe",
-//     category: "Grand Tourer",
-//     image: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=900&q=85",
-//     tag: "Editor's Pick",
-//   },
-//   {
-//     name: "BMW",
-//     model: "8 Series Coupe",
-//     category: "Luxury Sport",
-//     image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=900&q=85",
-//     tag: "Most Booked",
-//   },
-//   {
-//     name: "Audi",
-//     model: "R8 V10",
-//     category: "Supercar",
-//     image: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=900&q=85",
-//     tag: null,
-//   },
-//   {
-//     name: "Porsche",
-//     model: "Taycan Turbo S",
-//     category: "Electric Sport",
-//     image: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=900&q=85",
-//     tag: "New Arrival",
-//   },
-//   {
-//     name: "Mercedes",
-//     model: "AMG GT Black Series",
-//     category: "Performance",
-//     image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=900&q=85",
-//     tag: null,
-//   },
-// ];
 
 // ─── ICONS ───────────────────────────────────────────────
 const ArrowLeft = () => (
@@ -311,7 +272,7 @@ export default function TopPicksSection() {
       data: carsData,
       isLoading,
       error
-    } = useCars();
+    } = useTenCarsMostRented();
   
     const cars = carsData || [];
 
@@ -320,6 +281,10 @@ export default function TopPicksSection() {
     100,
     ((activeIndex) / (cars.length - 1)) * 100
   );
+
+ 
+
+ 
 
   return (
     <section

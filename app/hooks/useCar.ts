@@ -17,10 +17,27 @@ export const useCars = () => {
 
       return res.data.data as Car[];
     },
-    staleTime: 1000 * 60 * 5,
+    // staleTime: 1000 * 60 * 5,
   });
 };
 
+
+export const useTenCarsMostRented = () => {
+  return useQuery({
+    queryKey: ["top-rented-cars"],
+    queryFn: async () => {
+      const res = await api.get("/api/cars/top-rented");
+      
+
+      if (!res.data.success) {
+        throw new Error(res.data.message || "Failed to fetch cars");
+      }
+
+      return res.data.data as Car[];
+    },
+   
+  });
+};
 
 export const useCar = (id: string) => {
   return useQuery({

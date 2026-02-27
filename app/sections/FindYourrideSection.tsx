@@ -440,7 +440,7 @@ export default function FindYourRideSection() {
 
         {/* ── CARDS GRID ── */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {cars.map((car, i) => (
+          {cars.slice(0, 3).map((car, i) => (
             <CarCard key={car._id} car={car} index={i} />
           ))}
         </div>

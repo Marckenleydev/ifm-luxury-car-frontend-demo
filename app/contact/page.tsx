@@ -12,14 +12,18 @@ import {
   IconInstagram,
   IconTwitter,
   IconArrow,
+  IconPhone,
+  IconMail,
+  IconClock,
 } from "../Icons";
 import { useCreateMessage } from "../hooks/useMessage";
 import FormComponent from "../components/MessageForm";
-import { contactInfo, offices } from "../data";
+import {  offices } from "../data";
 import { toast } from "sonner";
 import { useUser } from "../hooks/useUser";
 import TestimonialForm from "../components/TestimonialForm";
 import { useCreateTestimonial } from "../hooks/useTestimonial";
+import { useOfficeContact } from "../hooks/useContact";
 
 // Gold ornament component
 const GoldOrnament = () => (
@@ -38,15 +42,52 @@ const GoldOrnament = () => (
   </div>
 );
 
-
-
 export default function ContactPage() {
+  const { useGetOfficeContacts } = useOfficeContact();
   const { mutate, isPending } = useCreateMessage();
-  const { mutate: createTestimonialMutate, isPending: isTestimonialPending } = useCreateTestimonial();
+  const { mutate: createTestimonialMutate, isPending: isTestimonialPending } =
+    useCreateTestimonial();
 
   const [openTestimonial, setOpenTestimonial] = useState(false);
+ 
+const { data, isLoading, error } = useGetOfficeContacts();
 
-   const { user } = useUser();
+const office = data?.[0];
+
+const contactInfo = office
+  ? [
+      {
+        icon: <IconPhone />,
+        label: "Phone",
+        value: office.phone,
+        sub: "Mon – Fri, 9am to 6pm",
+      },
+      {
+        icon: <IconMail />,
+        label: "Email",
+        value: office.email,
+        sub: "We reply within 2 hours",
+      },
+      {
+        icon: <IconLocation />,
+        label: "Headquarters",
+        value: office.HeadquartersFullAddress,
+        sub: `${office.city}, ${office.country}`,
+      },
+      {
+          icon: <IconClock />,
+          label: "Working Hours",
+          value: "24/7 Concierge",
+          sub: "Always here for you",
+        },
+    ]
+  : [];
+
+
+console.log(data);
+
+
+  const { user } = useUser();
   const subjects = [
     "General Inquiry",
     "Car Availability",
@@ -66,54 +107,36 @@ export default function ContactPage() {
 
   const [submitted, setSubmitted] = useState(false);
 
-  
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const createTestimonial = (
-  data: { rating: number; comment: string }
-) => {
-  createTestimonialMutate(data, {
-    onSuccess: () => {
-      toast.success("Testimonial submitted! Pending approval.");
-      setOpenTestimonial(false);
-    },
-    onError: () => {
-      toast.error("Failed to submit testimonial.");
-    },
-  });
-};
-
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!user) {
-    toast.error("You must be logged in to send a message.",
-    );
-    return;
-  }
+    if (!user) {
+      toast.error("You must be logged in to send a message.");
+      return;
+    }
 
-  mutate(formData, {
-    onSuccess: () => {
-       toast.success("Message sent successfully!",);
-      setSubmitted(true);
-      setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        subject: "",
-        message: "",
-      });
-    },
-    onError: () => {
-      toast.error("Failed to send message. Please try again.",);
-    },
-  });
-};
-
+    mutate(formData, {
+      onSuccess: () => {
+        toast.success("Message sent successfully!");
+        setSubmitted(true);
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          subject: "",
+          message: "",
+        });
+      },
+      onError: () => {
+        toast.error("Failed to send message. Please try again.");
+      },
+    });
+  };
 
   return (
     <main className="min-h-screen" style={{ background: "#090909" }}>
@@ -369,13 +392,13 @@ export default function ContactPage() {
                 Our Offices
               </h3>
               <div className="flex flex-col gap-5">
-                {offices.map((office, i) => (
+                {data?.map((office, i) => (
                   <div
                     key={office.city}
                     className="flex flex-col gap-2 pb-4"
                     style={{
                       borderBottom:
-                        i < offices.length - 1
+                        i < data.length - 1
                           ? "1px solid rgba(201,168,76,0.12)"
                           : "none",
                     }}
@@ -390,7 +413,7 @@ export default function ContactPage() {
                       className="text-[11px]"
                       style={{ color: "rgba(245,240,232,0.45)" }}
                     >
-                      {office.address}
+                      {office.OfficeFullAddress?.[0]}
                     </p>
                     <p
                       className="text-[11px]"
@@ -472,48 +495,47 @@ export default function ContactPage() {
                 }}
               />
               <div className="relative z-10 flex flex-col gap-4">
-  <div className="flex items-center gap-2">
-    <span
-      className="w-2 h-2 rounded-full"
-      style={{ background: "#C9A84C" }}
-    />
-    <span
-      className="text-[9px] font-semibold tracking-[0.2em] uppercase"
-      style={{ color: "#C9A84C" }}
-    >
-      Share Your Experience
-    </span>
-  </div>
+                <div className="flex items-center gap-2">
+                  <span
+                    className="w-2 h-2 rounded-full"
+                    style={{ background: "#C9A84C" }}
+                  />
+                  <span
+                    className="text-[9px] font-semibold tracking-[0.2em] uppercase"
+                    style={{ color: "#C9A84C" }}
+                  >
+                    Share Your Experience
+                  </span>
+                </div>
 
-  <h3
-    className="text-base"
-    style={{
-      fontFamily: "'Cormorant Garamond', serif",
-      color: "#F5F0E8",
-    }}
-  >
-    Leave a Testimonial
-  </h3>
+                <h3
+                  className="text-base"
+                  style={{
+                    fontFamily: "'Cormorant Garamond', serif",
+                    color: "#F5F0E8",
+                  }}
+                >
+                  Leave a Testimonial
+                </h3>
 
-  <p
-    className="text-[11px]"
-    style={{ color: "rgba(245,240,232,0.45)" }}
-  >
-    Tell us about your experience with our service.
-  </p>
+                <p
+                  className="text-[11px]"
+                  style={{ color: "rgba(245,240,232,0.45)" }}
+                >
+                  Tell us about your experience with our service.
+                </p>
 
-  <button
-    onClick={() => setOpenTestimonial(true)}
-    className="w-full py-3 text-[9px] font-bold tracking-[0.25em] uppercase transition-all mt-2"
-    style={{
-      background: "linear-gradient(135deg, #8B7035, #C9A84C)",
-      color: "#090909",
-    }}
-  >
-    Add Testimonial
-  </button>
-</div>
-
+                <button
+                  onClick={() => setOpenTestimonial(true)}
+                  className="w-full py-3 text-[9px] font-bold tracking-[0.25em] uppercase transition-all mt-2"
+                  style={{
+                    background: "linear-gradient(135deg, #8B7035, #C9A84C)",
+                    color: "#090909",
+                  }}
+                >
+                  Add Testimonial
+                </button>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -636,31 +658,26 @@ export default function ContactPage() {
         </motion.div>
       </div>
       {openTestimonial && (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-    
-    <div className="relative w-full max-w-xl mx-4">
-      
-      {/* Close Button */}
-      <button
-        onClick={() => setOpenTestimonial(false)}
-        className="absolute -top-10 right-0 text-sm tracking-widest text-[#C9A84C]"
-      >
-        CLOSE
-      </button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+          <div className="relative w-full max-w-xl mx-4">
+            {/* Close Button */}
+            <button
+              onClick={() => setOpenTestimonial(false)}
+              className="absolute -top-10 right-0 text-sm tracking-widest text-[#C9A84C]"
+            >
+              CLOSE
+            </button>
 
-      {/* Form Container */}
-      <TestimonialForm
-        user={user}
-        isPending={isPending}
-         
-  createTestimonial={createTestimonialMutate}
-        onSuccess={() => setOpenTestimonial(false)}
-      />
-      
-    </div>
-  </div>
-)}
-
+            {/* Form Container */}
+            <TestimonialForm
+              user={user}
+              isPending={isTestimonialPending}
+              createTestimonial={createTestimonialMutate}
+              onSuccess={() => setOpenTestimonial(false)}
+            />
+          </div>
+        </div>
+      )}
 
       <Footer />
     </main>

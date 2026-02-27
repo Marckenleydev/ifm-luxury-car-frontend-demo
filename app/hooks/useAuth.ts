@@ -70,6 +70,54 @@ export const useAuth = () => {
     },
   });
 
+
+  const useRequestPasswordResetMutation = () => {
+  return useMutation({
+    mutationFn: async (email: string) => {
+      const res = await api.post(
+        `/api/auth/request-password-reset`,
+        { email }
+       
+      );
+      return res.data; 
+    },
+    onSuccess: () => {
+          
+
+      toast.success("Reset link sent!");
+     
+    },
+    onError: (err: any) => {
+      console.error(err);
+      toast.error("Failed to request reset:", err.response?.data?.message || err.message);
+    },
+  });
+};
+
+
+const useResetPasswordMutation = () => {
+  return useMutation({
+    mutationFn: async ({  newPassword, token }: {  newPassword: string; token: string }) => {
+      const res = await api.post(
+        `/api/auth/reset-password`,
+        { newPassword, token }
+       
+      );
+      return res.data; // return data so you can use it in onSuccess or components
+    },
+    onSuccess: () => {
+        
+      toast.success("Password reset successful!");
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+      router.push("/auth");
+    },
+    onError: (err: any) => {
+      console.error(err);
+      toast.error("Failed to reset your password:", err.response?.data?.message || err.message);
+    },
+  });
+};
+
   return {
    
     login: login.mutateAsync,
@@ -78,5 +126,8 @@ export const useAuth = () => {
     loginLoading: login.isPending,
     registerLoading: register.isPending,
     logoutLoading: logout.isPending,
+    useRequestPasswordResetMutation: useRequestPasswordResetMutation,
+    useResetPasswordMutation: useResetPasswordMutation,
+   
   };
 };
