@@ -261,7 +261,7 @@ export default function RequestPasswordResetPage() {
           >
             Remember your password?{" "}
             <a
-              href="/login"
+              href="/auth"
               className="font-semibold no-underline transition-colors"
               style={{ color: "#C9A84C" }}
             >
