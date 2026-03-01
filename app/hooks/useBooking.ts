@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../api/api";
 import { Booking } from "../types";
 
@@ -49,5 +49,31 @@ export const useCreateBooking = () => {
       ? (mutation.error as Error)?.message
       : null,
     success: mutation.isSuccess,
+  };
+};
+
+
+export const useBookings = () => {
+  const { data, isLoading, isError, error, refetch } = useQuery({
+    queryKey: ["bookings"],
+    queryFn: async () => {
+      const res = await api.get("/api/bookings/my-bookings");
+
+      if (!res.data.success) {
+        throw new Error("Failed to fetch bookings");
+      }
+
+      return res.data.data as Booking[];
+    },
+    // staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+
+  return {
+    bookings: data || [],
+    loading: isLoading,
+    error: isError
+      ? (error as Error)?.message || "Something went wrong"
+      : null,
+    refetch,
   };
 };

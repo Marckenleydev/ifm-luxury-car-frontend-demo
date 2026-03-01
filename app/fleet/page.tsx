@@ -264,31 +264,7 @@ export default function FleetPage() {
     return matchCategory && matchSearch;
   });
 
-  // Loading state
-  if (isLoading) {
-    return (
-      <div className="w-full min-h-screen bg-[#090909] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#C9A84C] border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
-
-  // Error state
-  if (error) {
-    return (
-      <div className="w-full min-h-screen bg-[#090909] flex items-center justify-center text-white">
-        <div className="text-center">
-          <h3 className="text-xl mb-4">Failed to load vehicles</h3>
-          <button 
-            onClick={() => window.location.reload()}
-            className="px-6 py-2 bg-[#C9A84C] text-black"
-          >
-            Retry
-          </button>
-        </div>
-      </div>
-    );
-  }
+ 
 
   return (
     <div className="w-full min-h-screen" style={{ background: "#090909" }}>
@@ -430,19 +406,27 @@ export default function FleetPage() {
               exit={{ opacity: 0 }}
               className="flex flex-col items-center justify-center py-24 text-center"
             >
-              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "32px", fontWeight: 300, color: "rgba(245,240,232,0.2)" }}>
-                No Vehicles Found
-              </h3>
-              <p className="text-[12px] mt-3" style={{ color: "rgba(245,240,232,0.3)" }}>
-                Try adjusting your search or category filter.
-              </p>
-              <button
+              {isLoading ? (
+                <div className="w-8 h-8 border-2 border-[#C9A84C] border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <>
+                  <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "32px", fontWeight: 300, color: "rgba(245,240,232,0.2)" }}>
+                    No Vehicles Found
+                  </h3>
+                  <p className="text-[12px] mt-3" style={{ color: "rgba(245,240,232,0.3)" }}>
+                    Try adjusting your search or category filter.
+                  </p>
+                  <button
                 onClick={() => { setActiveCategory("All"); setSearch(""); }}
                 className="mt-6 px-6 py-3 text-[9.5px] font-bold tracking-[0.3em] uppercase transition-all hover:bg-[#E8C97A]"
                 style={{ background: "linear-gradient(135deg, #8B7035, #C9A84C)", color: "#090909" }}
               >
                 Clear Filters
               </button>
+                </>
+              )}
+             
+              
             </motion.div>
           )}
         </AnimatePresence>

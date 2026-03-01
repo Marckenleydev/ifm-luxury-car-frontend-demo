@@ -318,27 +318,9 @@ export default function FindYourRideSection() {
 
   const cars = carsData || [];
 
-  // Loading state
-  if (isLoading) {
-    return (
-      <section className="relative w-full overflow-hidden" style={{ minHeight: "600px" }}>
-        <div className="flex items-center justify-center h-full py-24">
-          <div className="w-8 h-8 border-2 border-[#C9A84C] border-t-transparent rounded-full animate-spin" />
-        </div>
-      </section>
-    );
-  }
+  
 
-  // Error state
-  if (error) {
-    return (
-      <section className="relative w-full overflow-hidden bg-[#090909]">
-        <div className="text-center py-24 text-red-400">
-          Failed to load cars. Please try again.
-        </div>
-      </section>
-    );
-  }
+ 
 
   return (
     <section
@@ -417,7 +399,48 @@ export default function FindYourRideSection() {
   </motion.div>
 
   {/* Right — View All CTA */}
-  <motion.a
+  {/* Desktop Version */}
+<motion.a
+  href="/fleet"
+  initial={{ opacity: 0, x: 30 }}
+  whileInView={{ opacity: 1, x: 0 }}
+  viewport={{ once: true, amount: 0.3 }}
+  transition={{ duration: 0.75, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+  whileHover={{ x: 4 }}
+  className="hidden md:inline-flex items-center gap-3 no-underline self-end group"
+>
+  <span
+    className="text-[9.5px] font-semibold tracking-[0.3em] uppercase border-b pb-0.5 transition-colors duration-300"
+    style={{ color: "#C9A84C", borderBottomColor: "rgba(201,168,76,0.3)" }}
+  >
+    View Entire Fleet
+  </span>
+  <span
+    className="group-hover:translate-x-1 transition-transform duration-200"
+    style={{ color: "#C9A84C" }}
+  >
+    <IconArrow />
+  </span>
+</motion.a>
+
+{/* Mobile Button Version */}
+<motion.a
+  href="/fleet"
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, amount: 0.3 }}
+  transition={{ duration: 0.75, delay: 0.12 }}
+  whileTap={{ scale: 0.97 }}
+  className="md:hidden w-full inline-flex items-center justify-center gap-2.5 px-8 py-3 text-[9.5px] font-bold tracking-[0.3em] uppercase no-underline"
+  style={{
+    background: "linear-gradient(135deg, #8B7035 0%, #C9A84C 100%)",
+    color: "#000",
+  }}
+>
+  View Entire Fleet →
+</motion.a>
+
+  {/* <motion.a
     href="/fleet"
     initial={{ opacity: 0, x: 30 }}
     whileInView={{ opacity: 1, x: 0 }} // 👈 Changed here too
@@ -435,35 +458,61 @@ export default function FindYourRideSection() {
     <span className="group-hover:translate-x-1 transition-transform duration-200" style={{ color: "#C9A84C" }}>
       <IconArrow />
     </span>
-  </motion.a>
+  </motion.a> */}
 </div>
 
         {/* ── CARDS GRID ── */}
+        {cars.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          
           {cars.slice(0, 3).map((car, i) => (
             <CarCard key={car._id} car={car} index={i} />
           ))}
         </div>
-
+      ):(
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex flex-col items-center justify-center py-24 text-center"
+            >
+              {isLoading ? (
+                 <section className="relative w-full overflow-hidden" style={{ minHeight: "600px" }}>
+        <div className="flex items-center justify-center h-full py-24">
+          <div className="w-8 h-8 border-2 border-[#C9A84C] border-t-transparent rounded-full animate-spin" />
+        </div>
+      </section>
+              ) : (
+                <>
+                  <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "32px", fontWeight: 300, color: "rgba(245,240,232,0.2)" }}>
+                    No Vehicles Found
+                  </h3>
+                  <p className="text-[12px] mt-3" style={{ color: "rgba(245,240,232,0.3)" }}>
+                    Try adjusting your search or category filter.
+                  </p>
+                  
+                </>
+              )}
+             
+              
+            </motion.div>
+          )}
         {/* ── MOBILE VIEW ALL ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="flex justify-center mt-10 md:hidden"
-        >
-          <a
-            href="/fleet"
-            className="inline-flex items-center gap-2.5 px-8 py-3 text-[9.5px] font-bold tracking-[0.3em] uppercase no-underline"
-            style={{
-              background: "linear-gradient(135deg, #8B7035, #C9A84C)",
-              color: "#090909",
-            }}
-          >
-            View Entire Fleet
-            <IconArrow />
-          </a>
-        </motion.div>
+        <motion.a
+  href="/fleet"
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, amount: 0.3 }}
+  transition={{ duration: 0.75, delay: 0.12 }}
+  whileTap={{ scale: 0.97 }}
+  className="md:hidden w-full inline-flex items-center justify-center mt-6 gap-2.5 px-8 py-3 text-[9.5px] font-bold tracking-[0.3em] uppercase no-underline"
+  style={{
+    background: "linear-gradient(135deg, #8B7035 0%, #C9A84C 100%)",
+    color: "#000",
+  }}
+>
+  View Entire Fleet →
+</motion.a>
       </div>
 
       {/* Bottom rule */}

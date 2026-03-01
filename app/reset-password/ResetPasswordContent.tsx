@@ -109,7 +109,7 @@ export default function ResetPassword() {
       });
 
       toast.success('Password reset successfully!');
-      router.push('/login');
+      router.push('/auth');
     } catch (err: any) {
       console.error(err);
       toast.error(

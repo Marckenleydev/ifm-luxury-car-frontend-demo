@@ -38,6 +38,7 @@ export default function LuxuryNavbar() {
     { label: "About Us", href: "/about" },
     { label: "Contact", href: "/contact" },
     { label: "Faq", href: "/faq" },
+    ...(user ? [{ label: "My Bookings", href: "/my-bookings" }] : []),
   ];
 
   // Mobile menu variants

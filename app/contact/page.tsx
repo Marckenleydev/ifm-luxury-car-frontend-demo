@@ -59,19 +59,19 @@ const contactInfo = office
       {
         icon: <IconPhone />,
         label: "Phone",
-        value: office.phone,
+        value: office.phone || "+971 55 999 0003",
         sub: "Mon – Fri, 9am to 6pm",
       },
       {
         icon: <IconMail />,
         label: "Email",
-        value: office.email,
+        value: office.email || "ifmluxurycarrental@gmail.com",
         sub: "We reply within 2 hours",
       },
       {
         icon: <IconLocation />,
         label: "Headquarters",
-        value: office.HeadquartersFullAddress,
+        value: office.HeadquartersFullAddress || "Deira - Riggat Al Buteen - 4th St - Deira Suites Business Tower - 2nd Floor - Office No: 205",
         sub: `${office.city}, ${office.country}`,
       },
       {
