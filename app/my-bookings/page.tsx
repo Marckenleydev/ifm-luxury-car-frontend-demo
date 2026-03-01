@@ -207,16 +207,7 @@ export default function MyBookingsPage() {
     return { totalSpent, upcoming, completed, total: bookings.length };
   }, [bookings]);
 
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center py-20 gap-4">
-        <div className="w-12 h-12 rounded-full animate-spin" style={{ border: "3px solid rgba(201,168,76,0.2)", borderTopColor: "#C9A84C" }} />
-        <span className="text-[11px] tracking-[0.3em] uppercase font-medium" style={{ color: "rgba(245,240,232,0.5)" }}>
-          Loading bookings...
-        </span>
-      </div>
-    );
-  }
+  
 
   if (error) {
     return (
@@ -333,44 +324,49 @@ export default function MyBookingsPage() {
             </button>
           ))}
         </motion.div>
-
-        {/* Bookings List */}
-        <div className="flex flex-col gap-5">
-          {filteredBookings.length > 0 ? (
-            filteredBookings.map((booking, i) => (
-              <BookingCard key={booking._id} booking={booking} index={i} />
-            ))
-          ) : (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="p-12 flex flex-col items-center gap-4 text-center"
-              style={{ background: "#111", border: "1px solid rgba(201,168,76,0.15)" }}
-            >
-              <span style={{ color: "rgba(201,168,76,0.3)" }}>
-                <IconCalendar />
-              </span>
-              <div className="flex flex-col gap-2">
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "24px", fontWeight: 300, color: "#F5F0E8" }}>
-                  No Bookings Found
-                </h3>
-                <p className="text-[12px]" style={{ color: "rgba(245,240,232,0.35)" }}>
-                  {filterStatus === "ALL" 
-                    ? "You haven't made any reservations yet. Browse our luxury fleet to start your journey."
-                    : `No ${filterStatus.toLowerCase()} bookings at the moment.`
-                  }
-                </p>
-              </div>
-              <a
-                href="/fleet"
-                className="mt-2 px-6 py-3 text-[10px] font-bold tracking-[0.3em] uppercase no-underline transition-all duration-300 hover:bg-[#E8C97A]"
-                style={{ background: "linear-gradient(135deg, #8B7035, #C9A84C)", color: "#090909" }}
-              >
-                Browse Fleet
-              </a>
-            </motion.div>
-          )}
+{loading ? (
+  <div className="flex items-center justify-center py-20">
+    <div className="w-12 h-12 border-2 border-[#C9A84C] border-t-transparent rounded-full animate-spin" />
+  </div>
+) : (
+  <div className="flex flex-col gap-5">
+    {filteredBookings.length > 0 ? (
+      filteredBookings.map((booking, i) => (
+        <BookingCard key={booking._id} booking={booking} index={i} />
+      ))
+    ) : (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="p-12 flex flex-col items-center gap-4 text-center"
+        style={{ background: "#111", border: "1px solid rgba(201,168,76,0.15)" }}
+      >
+        <span style={{ color: "rgba(201,168,76,0.3)" }}>
+          <IconCalendar />
+        </span>
+        <div className="flex flex-col gap-2">
+          <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "24px", fontWeight: 300, color: "#F5F0E8" }}>
+            No Bookings Found
+          </h3>
+          <p className="text-[12px]" style={{ color: "rgba(245,240,232,0.35)" }}>
+            {filterStatus === "ALL" 
+              ? "You haven't made any reservations yet. Browse our luxury fleet to start your journey."
+              : `No ${filterStatus.toLowerCase()} bookings at the moment.`
+            }
+          </p>
         </div>
+        <a
+          href="/fleet"
+          className="mt-2 px-6 py-3 text-[10px] font-bold tracking-[0.3em] uppercase no-underline transition-all duration-300 hover:bg-[#E8C97A]"
+          style={{ background: "linear-gradient(135deg, #8B7035, #C9A84C)", color: "#090909" }}
+        >
+          Browse Fleet
+        </a>
+      </motion.div>
+    )}
+  </div>
+)}
+       
 
       </div>
     </div>
