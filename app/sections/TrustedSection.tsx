@@ -8,6 +8,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { useRef } from "react";
 import type { Swiper as SwiperType } from "swiper";
+import { useGetTestimonials } from "../hooks/useTestimonial";
 
 const testimonials = [
   {
@@ -44,6 +45,7 @@ const testimonials = [
 
 export default function TrustedSection() {
   const swiperRef = useRef<SwiperType | null>(null);
+  const { data: testimonials } = useGetTestimonials();
 
   return (
    <section className="relative w-full bg-[#090909] py-16 px-6 md:px-16 lg:px-24 overflow-hidden">
@@ -130,7 +132,7 @@ export default function TrustedSection() {
             }}
             className="!pb-4"
           >
-            {testimonials.map((item, i) => (
+            {testimonials?.map((item, i) => (
               <SwiperSlide key={i}>
               <div
                   className="flex flex-col gap-4 p-6 h-full"
@@ -139,14 +141,14 @@ export default function TrustedSection() {
                   {/* Quote mark + stars */}
                   <div className="flex items-start justify-between">
                     <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "48px", fontWeight: 300, color: "rgba(201,168,76,0.15)", lineHeight: 0.8 }}>
-                      "
+                      &quot;
                     </span>
                     <div className="flex gap-1 text-[#C9A84C] text-sm">★★★★★</div>
                   </div>
 
                   {/* Review text */}
                   <p className="flex-1 text-[12.5px] leading-relaxed" style={{ color: "rgba(245,240,232,0.45)" }}>
-                    {item.review}
+                    {item.comment}
                   </p>
 
                   {/* Divider */}
@@ -159,16 +161,16 @@ export default function TrustedSection() {
                       className="w-9 h-9 flex items-center justify-center text-[10px] font-bold flex-shrink-0 rounded-full uppercase"
                       style={{ background: "rgba(201,168,76,0.1)", border: "1px solid rgba(201,168,76,0.3)", color: "#C9A84C" }}
                     >
-                      {item.name.charAt(0)}
+                      {item.user.firstName.charAt(0)}
                     </div>
 
                     <div>
                       <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "15px", color: "#F5F0E8" }}>
-                        {item.name}
+                        {item.user.firstName} {item.user.lastName}
                       </p>
-                      <p className="text-[9px] tracking-[0.22em] uppercase" style={{ color: "rgba(245,240,232,0.3)" }}>
+                      {/* <p className="text-[9px] tracking-[0.22em] uppercase" style={{ color: "rgba(245,240,232,0.3)" }}>
                         {item.role}
-                      </p>
+                      </p> */}
                     </div>
 
                     {/* Verified */}

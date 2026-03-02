@@ -116,3 +116,18 @@ export interface OfficeContact {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export type Review = {
+  _id: string;
+  user: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+  };
+  rating: number;
+  comment: string;
+  status: "APPROVED" | "PENDING" | "REJECTED"; // adjust statuses as needed
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  __v: number;
+};
