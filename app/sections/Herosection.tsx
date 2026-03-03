@@ -228,10 +228,10 @@ export default function HeroSection() {
   return (
     <>
       {/* ── CUSTOM CURSOR ─────────────────────── */}
-      <motion.div
+      {/* <motion.div
         className="fixed top-0 left-0 w-8 h-8 rounded-full border border-[#C9A84C]/60 pointer-events-none z-[9999] mix-blend-difference hidden lg:block"
         style={{ x: springX, y: springY }}
-      />
+      /> */}
 
       <section className="relative w-full h-screen min-h-[680px] max-h-[960px] overflow-hidden bg-[#090909] flex flex-col">
 

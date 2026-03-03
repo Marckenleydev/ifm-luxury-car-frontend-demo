@@ -5,7 +5,7 @@ import { useRef, useState, useCallback } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
-import { useTenCarsMostRented } from "../hooks/useCar";
+import { useCars, useTenCarsMostRented } from "../hooks/useCar";
 import LuxuryLoader from "../components/LuxuryLoader";
 
 
@@ -269,12 +269,23 @@ export default function TopPicksSection() {
   }, []);
 
    const {
-      data: carsData,
+      data: TopTenCarsData,
       isLoading,
       error
     } = useTenCarsMostRented();
+
+
+
+    
+     const {
+        data: allCarsData,
+        isLoading: allCarsLoading,
+        error: allCarsError
+      } = useCars();
   
-    const cars = carsData || [];
+    const cars = (TopTenCarsData && TopTenCarsData.length > 0) ? TopTenCarsData : allCarsData || [];
+
+    console.log(allCarsData)
 
   // Progress = (activeIndex / (total - slidesVisible))
   const progressPercent = Math.min(
