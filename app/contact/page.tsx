@@ -15,6 +15,7 @@ import {
   IconPhone,
   IconMail,
   IconClock,
+  IconTikTok,
 } from "../Icons";
 import { useCreateMessage } from "../hooks/useMessage";
 import FormComponent from "../components/MessageForm";
@@ -457,11 +458,12 @@ console.log(data);
               </p>
               <div className="flex gap-3">
                 {[
-                  { icon: <IconFacebook />, label: "Facebook" },
-                  { icon: <IconInstagram />, label: "Instagram" },
-                  { icon: <IconTwitter />, label: "Twitter" },
+                  { icon: <IconFacebook />, label: "Facebook", href: "https://www.facebook.com/share/1E16k8YURY/?mibextid=wwXIfr" },
+                  { icon: <IconInstagram />, label: "Instagram", href: "https://www.instagram.com/ifmcar?igsh=eDZhb3o4ZWk0dzRy&utm_source=qr" },
+                  { icon: <IconTikTok />, label: "TikTok", href: "https://www.tiktok.com/@ifm.cars" },
                 ].map((social) => (
-                  <button
+                  <a
+                  href={social.href}
                     key={social.label}
                     className="w-10 h-10 flex items-center justify-center transition-all duration-300"
                     style={{
@@ -474,7 +476,7 @@ console.log(data);
                     }}
                   >
                     {social.icon}
-                  </button>
+                  </a>
                 ))}
               </div>
             </div>
