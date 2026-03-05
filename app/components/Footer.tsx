@@ -3,20 +3,19 @@
 "use client";
 
 
-import { FacebookIcon, InstagramIcon, LinkedInIcon, LocationIcon, MailIcon, PhoneIcon, TwitterIcon, WhatsAppIcon } from "../Icons";
+import { FacebookIcon, IconTikTok, InstagramIcon, LinkedInIcon, LocationIcon, MailIcon, PhoneIcon, TwitterIcon, WhatsAppIcon } from "../Icons";
 import { footerLinks } from "../data";
 
 
 
 // ─── FOOTER DATA ─────────────────────────────────────────
-
+    const message = "Hello I’m interested in your luxury car rental services. Can you share availability and pricing? ";
 
 const socialLinks = [
-  { icon: <InstagramIcon />, href: "https://instagram.com", label: "Instagram" },
-  { icon: <FacebookIcon />, href: "https://facebook.com", label: "Facebook" },
-  { icon: <TwitterIcon />, href: "https://twitter.com", label: "Twitter" },
-  { icon: <LinkedInIcon />, href: "https://linkedin.com", label: "LinkedIn" },
-  { icon: <WhatsAppIcon />, href: "https://wa.me/+971 50 123 4567", label: "WhatsApp" },
+  { icon: <InstagramIcon />, href: "https://www.instagram.com/ifmcar?igsh=eDZhb3o4ZWk0dzRy&utm_source=qr", label: "Instagram" },
+  { icon: <FacebookIcon />, href: "https://www.facebook.com/share/1E16k8YURY/?mibextid=wwXIfr", label: "Facebook" },
+  { icon: <IconTikTok />, href: "https://www.tiktok.com/@ifm.cars", label: "TikTok" },
+  { icon: <WhatsAppIcon />, href: `https://wa.me/971559990003?text=${encodeURIComponent(message)}`, label: "WhatsApp" },
 ];
 
 // ─── MAIN FOOTER ─────────────────────────────────────────

@@ -478,6 +478,8 @@ export default function FindYourRideSection() {
               el: '.swiper-pagination',
               bulletClass: 'swiper-pagination-bullet',
               bulletActiveClass: 'swiper-pagination-bullet-active',
+              dynamicBullets: true,
+              dynamicMainBullets: 3,
             }}
             autoplay={{
               delay: 5000,
