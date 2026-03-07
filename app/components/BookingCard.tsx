@@ -233,7 +233,7 @@ export default function BookingCard({ car }: BookingCardProps) {
               lineHeight: 1,
             }}
           >
-            ${car.pricePerDay}
+            AED{" "}{car.pricePerDay}
           </span>
           <span
             className="text-[10px] tracking-[0.25em] uppercase"
@@ -347,10 +347,10 @@ export default function BookingCard({ car }: BookingCardProps) {
             style={{ color: "rgba(245,240,232,0.4)" }}
           >
             <span>
-              ${car.pricePerDay} × {pickupDate && returnDate ? days : "0"}{" "}
+              AED{" "}{car.pricePerDay} × {pickupDate && returnDate ? days : "0"}{" "}
               {days === 1 ? "day" : "days"}
             </span>
-            <span>${pickupDate && returnDate ? total : "0"}</span>
+            <span>AED{" "}{pickupDate && returnDate ? total : "0"}</span>
           </div>
           <div
             className="flex justify-between text-[11px]"
@@ -364,7 +364,7 @@ export default function BookingCard({ car }: BookingCardProps) {
             style={{ color: "#C9A84C" }}
           >
             <span>Total</span>
-            <span>${pickupDate && returnDate ? total : "0"}</span>
+            <span>AED{" "}{pickupDate && returnDate ? total : "0"}</span>
           </div>
         </div>
 
