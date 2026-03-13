@@ -15,6 +15,9 @@ export const metadata: Metadata = {
     default: "IFM Luxury Car Rentals Dubai | Exotic & Premium Car Hire UAE",
     template: "%s | IFM Luxury Car Rentals Dubai",
   },
+  verification: {
+    google: "ZVhDpU26_RoJMUTOkz8uWh0T00JRgoFtcEzQ-8yEeFQ",
+  },
 
   description:
     "Rent luxury and exotic cars in Dubai with IFM Luxury Car Rentals. Ferrari, Lamborghini, Rolls-Royce, Bentley & premium SUVs available daily, weekly or monthly. Fast delivery across UAE.",

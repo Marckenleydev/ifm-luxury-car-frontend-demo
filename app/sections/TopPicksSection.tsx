@@ -285,7 +285,7 @@ export default function TopPicksSection() {
   
     const cars = (TopTenCarsData && TopTenCarsData.length > 0) ? TopTenCarsData : allCarsData || [];
 
-    console.log(allCarsData)
+   
 
   // Progress = (activeIndex / (total - slidesVisible))
   const progressPercent = Math.min(
@@ -465,7 +465,7 @@ export default function TopPicksSection() {
             className="!overflow-visible"
           >
             {cars.map((car, i) => (
-              <SwiperSlide key={car.plateNumber} className="!h-auto">
+              <SwiperSlide key={i} className="!h-auto">
                 <CarCard car={car} index={i} />
               </SwiperSlide>
             ))}

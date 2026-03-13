@@ -164,7 +164,7 @@ export default function SingleCarPage() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.4 }}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover "
                   style={{ filter: "brightness(0.9)" }}
                 />
               </AnimatePresence>
